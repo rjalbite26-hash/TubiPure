@@ -15,6 +15,8 @@ use Illuminate\Validation\ValidationException;
 
 class DeliveryController extends Controller
 {
+    private const MINIMUM_DELIVERY_FEE = 5.00;
+
     public function index(Request $request): JsonResponse
     {
         $deliveries = Delivery::query()
@@ -175,7 +177,7 @@ class DeliveryController extends Controller
         );
         $deliveryRatePerKilometer = $deliveryZone !== null ? (float) $pricingSettings->delivery_price_per_km : null;
         $deliveryFee = $deliveryDistanceInKilometers !== null
-            ? round($deliveryDistanceInKilometers * $deliveryRatePerKilometer, 2)
+            ? $this->deliveryFeeForDistance($deliveryDistanceInKilometers, $deliveryRatePerKilometer)
             : 0;
         $orderTotal = round($waterSubtotal + $deliveryFee, 2);
         $data = [
@@ -298,6 +300,15 @@ class DeliveryController extends Controller
             + cos(deg2rad($latitude)) * cos(deg2rad($targetLatitude)) * sin($longitudeDifference / 2) ** 2;
 
         return $earthRadiusKilometers * 2 * asin(min(1, sqrt($haversine)));
+    }
+
+    private function deliveryFeeForDistance(float $distanceInKilometers, float $ratePerKilometer): float
+    {
+        if ($distanceInKilometers <= 1) {
+            return self::MINIMUM_DELIVERY_FEE;
+        }
+
+        return max(self::MINIMUM_DELIVERY_FEE, round($distanceInKilometers * $ratePerKilometer, 2));
     }
 
     private function zoneForDistance(float $distanceInKilometers): string

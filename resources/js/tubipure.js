@@ -11,6 +11,11 @@ const ZONES = [
   {id:'B', name:'Zone B', range:'2 – 5 km', max:5},
   {id:'C', name:'Zone C', range:'5 km+', max:Infinity}
 ];
+const MINIMUM_DELIVERY_FEE = 5;
+function deliveryFeeForDistance(distanceInKilometers, ratePerKilometer){
+  const distanceBasedFee=Math.round(distanceInKilometers*ratePerKilometer*100)/100;
+  return distanceInKilometers<=1?MINIMUM_DELIVERY_FEE:Math.max(MINIMUM_DELIVERY_FEE,distanceBasedFee);
+}
 const COMPANY_LOCATION = {
   latitude:Number(document.querySelector('meta[name="company-latitude"]').content),
   longitude:Number(document.querySelector('meta[name="company-longitude"]').content)
@@ -3084,11 +3089,14 @@ function selectZone(zoneId){
   const distance=Number(document.getElementById('kmInput').value);
   document.querySelectorAll('.zone-radio').forEach(el=> el.classList.toggle('sel', el.dataset.zone===zone.id));
   document.getElementById('resultZoneLbl').textContent = zone.name+' · '+zone.range;
+  const deliveryFee=Number.isFinite(distance)&&distance>0?deliveryFeeForDistance(distance,deliveryRate):null;
   document.getElementById('resultPrice').innerHTML = Number.isFinite(distance)&&distance>0
-    ? `₱${(distance*deliveryRate).toFixed(2)}<span>delivery estimate</span>`
+    ? `₱${deliveryFee.toFixed(2)}<span>delivery estimate</span>`
     : `₱${deliveryRate.toFixed(2)}<span>/ km</span>`;
   document.getElementById('resultNote').textContent = Number.isFinite(distance)&&distance>0
-    ? `${distance.toFixed(1)} km falls within ${zone.name} coverage, at ₱${deliveryRate.toFixed(2)} per kilometer.`
+    ? distance<=1
+      ? `Trips up to 1 km have a ₱${MINIMUM_DELIVERY_FEE.toFixed(2)} delivery fee.`
+      : `${distance.toFixed(1)} km falls within ${zone.name} coverage, at ₱${deliveryRate.toFixed(2)} per kilometer (₱${MINIMUM_DELIVERY_FEE.toFixed(2)} minimum).`
     : 'Enter a distance to calculate the delivery fee.';
   drawZoneMap(zone.id);
 }
@@ -3922,8 +3930,10 @@ function updateOrderCoverage(){
   zoneInput.value=zone.id;
   coverageResult.textContent=`${zone.name} · ${zone.range}`;
   const deliveryRate=Number(pricingSettings?.delivery_price_per_km||0);
-  const deliveryFee=Math.round(orderDeliveryDistanceKm*deliveryRate*100)/100;
-  coverageDetail.textContent=`${orderDeliveryDistanceKm.toFixed(2)} km × ₱${deliveryRate.toFixed(2)}/km = ₱${deliveryFee.toFixed(2)} delivery fee`;
+  const deliveryFee=deliveryFeeForDistance(orderDeliveryDistanceKm,deliveryRate);
+  coverageDetail.textContent=orderDeliveryDistanceKm<=1
+    ? `Trips up to 1 km have a ₱${MINIMUM_DELIVERY_FEE.toFixed(2)} delivery fee.`
+    : `${orderDeliveryDistanceKm.toFixed(2)} km × ₱${deliveryRate.toFixed(2)}/km = ₱${deliveryFee.toFixed(2)} (₱${MINIMUM_DELIVERY_FEE.toFixed(2)} minimum)`;
 }
 
 function updateOrderSummary(){
@@ -3959,7 +3969,7 @@ function updateOrderSummary(){
   const hasPricing=alkalinePrice>0&&purifiedPrice>0&&deliveryPricePerKm>0;
   const waterSubtotal=Math.round((size*alkalineQuantity*alkalinePrice+size*purifiedQuantity*purifiedPrice)*100)/100;
   const deliveryFee=method==='delivery'&&orderDeliveryDistanceKm!==null
-    ? Math.round(orderDeliveryDistanceKm*deliveryPricePerKm*100)/100
+    ? deliveryFeeForDistance(orderDeliveryDistanceKm,deliveryPricePerKm)
     : null;
   const total=deliveryFee===null?null:Math.round((waterSubtotal+deliveryFee)*100)/100;
   const peso=value=>`₱${value.toFixed(2)}`;
@@ -3988,7 +3998,7 @@ function updateOrderSummary(){
     ? 'The admin must set alkaline, purified, and delivery rates before orders can be priced.'
     : !method?'Choose water and fulfillment to calculate your total.'
       : method==='delivery'
-      ? isOutsideServiceArea?OUTSIDE_DELIVERY_AREA_MESSAGE:deliveryFee===null?'Choose a saved address with a map pin to calculate your delivery fee.':`Water: ${peso(waterSubtotal)} · Delivery: ${orderDeliveryDistanceKm.toFixed(2)} km × ₱${deliveryPricePerKm.toFixed(2)}/km.`
+      ? isOutsideServiceArea?OUTSIDE_DELIVERY_AREA_MESSAGE:deliveryFee===null?'Choose a saved address with a map pin to calculate your delivery fee.':`Water: ${peso(waterSubtotal)} · ${orderDeliveryDistanceKm<=1?'Delivery: ₱5.00 for trips up to 1 km.':`Delivery: ${orderDeliveryDistanceKm.toFixed(2)} km × ₱${deliveryPricePerKm.toFixed(2)}/km (₱5.00 minimum).`}`
       : `Pickup water price is based on ₱${alkalinePrice.toFixed(2)}/gal alkaline and ₱${purifiedPrice.toFixed(2)}/gal purified water.`;
   const delivery=method==='delivery';
   document.getElementById('orderDeliveryFields').hidden=!delivery;

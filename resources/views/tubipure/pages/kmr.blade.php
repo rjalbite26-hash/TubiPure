@@ -27,7 +27,7 @@
             </div>
             <div class="pricing-input-grid pricing-input-grid-single">
               <div class="pricing-field"><label for="deliveryKmPriceInput">Price per kilometer (₱)</label><input type="number" name="delivery_price_per_km" id="deliveryKmPriceInput" min="0.01" max="999999.99" step="0.01" required></div>
-              <p class="pricing-calculation-note">Delivery fee = measured distance × price per kilometer</p>
+              <p class="pricing-calculation-note">Trips up to 1 km cost ₱5.00. Longer trips use the per-kilometer rate, with a ₱5.00 minimum.</p>
             </div>
           </section>
 
