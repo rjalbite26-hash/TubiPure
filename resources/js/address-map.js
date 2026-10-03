@@ -187,7 +187,16 @@ async function selectMapCenter() {
 
 const map = document.getElementById('addressMap');
 const addressSheet = document.querySelector('.address-bottom-sheet');
+const addressPicker = document.getElementById('addressPicker');
 let isMapDragging = false;
+
+function syncAddressSheetOffset() {
+  if (!addressSheet || addressPicker.hidden) return;
+  addressPicker.style.setProperty('--address-sheet-space', `${addressSheet.getBoundingClientRect().height}px`);
+}
+
+const addressSheetObserver = new ResizeObserver(syncAddressSheetOffset);
+if (addressSheet) addressSheetObserver.observe(addressSheet);
 
 function setMapDragging(isDragging) {
   isMapDragging = isDragging;
@@ -310,7 +319,10 @@ window.addressMapPicker = {
     document.getElementById('locationSearchInput').value = '';
     showFeedback('');
     updateSelected();
-    requestAnimationFrame(render);
+    requestAnimationFrame(() => {
+      syncAddressSheetOffset();
+      render();
+    });
   },
   close() {
     document.getElementById('addressPicker').hidden = true;
