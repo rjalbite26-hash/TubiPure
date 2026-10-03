@@ -257,6 +257,63 @@ function updatePendingOrderCount(){
   badge.setAttribute('aria-label',`${activeOrderCount} active customer orders`);
   badge.closest('button')?.setAttribute('title',activeOrderCount?`Orders · ${activeOrderCount} active orders`:'Orders');
 }
+function newUsersLastSeenKey(){
+  return currentUser?.role==='staff'?`tubipure-new-users-last-seen-${currentUser.id}`:null;
+}
+function getNewUsersLastSeen(){
+  const key=newUsersLastSeenKey();
+  if(!key) return Date.now();
+  try{
+    const storedTimestamp=localStorage.getItem(key);
+    if(storedTimestamp){
+      const timestamp=Number(storedTimestamp);
+      return Number.isFinite(timestamp)?timestamp:Date.now();
+    }
+    const timestamp=Date.now();
+    localStorage.setItem(key,String(timestamp));
+    return timestamp;
+  }catch{
+    return Date.now();
+  }
+}
+function markNewUsersAsSeen(){
+  const key=newUsersLastSeenKey();
+  if(!key) return;
+  try{
+    localStorage.setItem(key,String(Date.now()-1000));
+  }catch{
+    // Keep the Users page usable when browser storage is unavailable.
+  }
+}
+function updateNewUserCount(users=registeredUsers){
+  const badge=document.getElementById('adminNewUserCount');
+  if(!badge) return;
+  if(currentUser?.role!=='staff'){
+    badge.hidden=true;
+    return;
+  }
+  const lastSeen=getNewUsersLastSeen();
+  const newUserCount=users.filter(user=>{
+    const joinedAt=Date.parse(user.joinedAt||'');
+    return Number.isFinite(joinedAt)&&joinedAt>lastSeen;
+  }).length;
+  badge.textContent=newUserCount>99?'99+':String(newUserCount);
+  badge.hidden=newUserCount===0;
+  badge.setAttribute('aria-label',`${newUserCount} newly registered accounts`);
+  badge.closest('button')?.setAttribute('title',newUserCount?`Users · ${newUserCount} new accounts`:'Users');
+}
+async function refreshNewUserCount(){
+  if(currentUser?.role!=='staff') return;
+  const userId=String(currentUser.id);
+  getNewUsersLastSeen();
+  try{
+    const result=await api('/staff/users');
+    if(!currentUser||String(currentUser.id)!==userId||currentUser.role!=='staff') return;
+    updateNewUserCount(result.data||[]);
+  }catch{
+    // Leave the current badge unchanged if the user list cannot be refreshed.
+  }
+}
 let activeOrdersReport=null;
 const ordersReportDialog=document.getElementById('ordersReportDialog');
 const ordersReportPreviewDialog=document.getElementById('ordersReportPreviewDialog');
@@ -1459,6 +1516,7 @@ async function pollLiveNotifications(){
         const usersResult=await api('/staff/users');
         if(!currentUser||String(currentUser.id)!==userId) return;
         const updatedUsers=usersResult.data||[];
+        updateNewUserCount(updatedUsers);
         if(JSON.stringify(registeredUsers)!==JSON.stringify(updatedUsers)){
           registeredUsers=updatedUsers;
           renderUserRows();
@@ -1530,11 +1588,15 @@ async function pollLivePublicStats(){
   }
 }
 setInterval(pollLiveNotifications,3000);
+setInterval(()=>{
+  if(activePage!=='page-users') refreshNewUserCount();
+},30000);
 setInterval(pollLivePricingSettings,3000);
 setInterval(pollLivePublicStats,5000);
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden){
     pollLiveNotifications();
+    if(activePage!=='page-users') refreshNewUserCount();
     pollLivePricingSettings();
     pollLivePublicStats();
   }
@@ -2362,6 +2424,8 @@ async function renderUsers(){
   try{
     const result=await api('/staff/users');
     registeredUsers=result.data||[];
+    markNewUsersAsSeen();
+    updateNewUserCount(registeredUsers);
     renderUserRows();
   }catch(error){
     tbody.replaceChildren();
@@ -4463,6 +4527,7 @@ refreshSession().then(()=>{
   pendingJump = intent==='my-orders' ? 'myOrdersCard' : null;
   const requestedRoute=intent==='order' && currentUser?.role==='customer'?'order':route;
   go(currentUser.role==='staff' ? route : (['dashboard','customers','users','scheduler','order-history','kmr','datetime'].includes(route) ? 'myaccount' : requestedRoute));
+  if(currentUser.role==='staff'&&activePage!=='page-users') refreshNewUserCount();
   renderNotifications();
 }).catch(async()=>{
   currentUser=null;
