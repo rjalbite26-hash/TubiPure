@@ -58,7 +58,7 @@
       <div class="address-map-controls">
         <button type="button" id="zoomMapIn" aria-label="Zoom in">+</button>
         <button type="button" id="zoomMapOut" aria-label="Zoom out">−</button>
-        <button type="button" class="address-current-location" id="useCurrentLocation" aria-label="Use my current location" title="Use my current location"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        <button type="button" class="address-current-location" id="useCurrentLocation" aria-label="Use my current location" title="Use my current location"><span>Your location</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       </div>
       <a class="address-map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>
       <p class="address-map-feedback" id="mapFeedback" role="status" aria-live="polite"></p>
