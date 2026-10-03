@@ -18,14 +18,10 @@ class RenderAdminSeeder extends Seeder
         }
 
         $admin = User::query()->firstOrNew(['email' => trim($email)]);
-        $isNewAdmin = ! $admin->exists;
 
         $admin->name = is_string($name) && trim($name) !== '' ? trim($name) : 'TubiPure Admin';
         $admin->role = 'staff';
-
-        if ($isNewAdmin) {
-            $admin->password = $password;
-        }
+        $admin->password = $password;
 
         $admin->save();
     }
