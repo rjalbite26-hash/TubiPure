@@ -502,17 +502,6 @@ footer .footer-logo{width:28px; height:28px; object-fit:contain;}
 .address-map-selection-hint{margin:-7px 4px 12px;color:#728388;font-size:12px;}
 .address-selected-location h2{overflow:hidden;margin:0 0 3px;color:#132d33;font-size:19px;text-overflow:ellipsis;white-space:nowrap;}
 .address-selected-location p{display:-webkit-box;overflow:hidden;margin:0;color:#697a7e;font-size:14px;line-height:1.35;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
-.address-nearby-heading{display:flex;align-items:baseline;justify-content:space-between;padding:7px 4px;border-top:1px solid #edf0ef;}
-.address-nearby-heading h3{font-size:13px;}
-.address-nearby-heading span{color:#819093;font-size:11px;}
-.address-nearby-list{display:flex;max-height:130px;flex-direction:column;overflow:auto;}
-.address-nearby-option{display:flex;min-height:56px;align-items:center;gap:12px;padding:7px 5px;border:0;border-bottom:1px solid #eff2f1;background:white;text-align:left;cursor:pointer;}
-.address-nearby-option:hover,.address-nearby-option[aria-pressed="true"]{background:#f0faf7;}
-.address-nearby-option svg{width:25px;height:30px;flex:0 0 25px;color:var(--leaf);}
-.address-nearby-option span{min-width:0;}
-.address-nearby-option b,.address-nearby-option small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.address-nearby-option b{font-size:13px;}
-.address-nearby-option small{margin-top:2px;color:#78888b;font-size:11px;}
 .address-label-row{display:flex;align-items:center;gap:12px;padding:12px 0 8px;}
 .address-label-row label{flex:0 0 auto;color:#52676b;font-size:13px;font-weight:700;}
 .address-label-row input{width:100%;min-width:0;padding:9px 12px;border:1px solid #dce7e3;border-radius:11px;background:#f9fcfa;color:#142c34;caret-color:#142c34;color-scheme:light;}
@@ -520,7 +509,7 @@ footer .footer-logo{width:28px; height:28px; object-fit:contain;}
 .address-form-feedback{min-height:0;margin:0;color:#a82b24;font-size:12px;}
 .address-select-button{min-height:54px;margin-top:8px;border:0;border-radius:999px;background:#00a844;color:white;font:700 17px var(--font-body);cursor:pointer;}
 .address-select-button:disabled{opacity:.65;cursor:wait;}
-@media(max-width:600px){.address-map-topbar{top:max(12px,env(safe-area-inset-top));left:12px;right:12px;gap:10px;}.address-map-back{width:52px;height:52px;flex-basis:52px;}.address-map-search{height:54px;gap:7px;padding:0 9px 0 12px;border-radius:17px;}.address-map-search input{font-size:15px;}.address-map-search button{width:31px;}.address-map-search button svg{width:23px;height:23px;}.address-map-controls{right:16px;bottom:calc(min(56vh,520px) + 20px);}.address-current-location{height:50px;gap:8px;padding-right:13px;padding-left:15px;font-size:13px;}.address-map-controls>button:not(.address-current-location){width:42px;height:42px;}.address-map-attribution{right:8px;bottom:calc(min(56vh,520px) + 4px);}.address-map-feedback{top:76px;}.address-bottom-sheet{width:100%;max-height:min(56vh,520px);padding-right:18px;padding-left:18px;border-radius:28px 28px 0 0;}.address-nearby-list{max-height:100px;}.address-selected-location h2{font-size:17px;}}
+@media(max-width:600px){.address-map-topbar{top:max(12px,env(safe-area-inset-top));left:12px;right:12px;gap:10px;}.address-map-back{width:52px;height:52px;flex-basis:52px;}.address-map-search{height:54px;gap:7px;padding:0 9px 0 12px;border-radius:17px;}.address-map-search input{font-size:15px;}.address-map-search button{width:31px;}.address-map-search button svg{width:23px;height:23px;}.address-map-controls{right:16px;bottom:calc(min(56vh,520px) + 20px);}.address-current-location{height:50px;gap:8px;padding-right:13px;padding-left:15px;font-size:13px;}.address-map-controls>button:not(.address-current-location){width:42px;height:42px;}.address-map-attribution{right:8px;bottom:calc(min(56vh,520px) + 4px);}.address-map-feedback{top:76px;}.address-bottom-sheet{width:100%;max-height:min(56vh,520px);padding-right:18px;padding-left:18px;border-radius:28px 28px 0 0;}.address-selected-location h2{font-size:17px;}}
 
 /* dashboard */
 .dashboard-shortcuts{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:22px;}

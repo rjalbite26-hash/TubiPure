@@ -70,8 +70,6 @@
         <div><h2 id="selectedLocationName">Tubipure Water Refilling Station</h2><p id="addressInputText">Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte</p></div>
       </div>
       <p class="address-map-selection-hint">Drag or tap anywhere on the map to place the pin.</p>
-      <div class="address-nearby-heading"><h3>Nearby locations</h3><span>Tap to choose</span></div>
-      <div id="nearbyLocations" class="address-nearby-list"></div>
       <div class="address-label-row"><label for="addressLabel">Save as</label><input id="addressLabel" name="label" maxlength="80" placeholder="Home, Work, etc." required></div>
       <p id="addressFormFeedback" class="address-form-feedback" role="status" aria-live="polite"></p>
       <button class="address-select-button" type="submit" id="saveAddressBtn">Select</button>

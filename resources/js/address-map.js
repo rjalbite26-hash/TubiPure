@@ -118,27 +118,10 @@ function updateSelected() {
   document.getElementById('addressInputText').textContent = selected.address;
 }
 
-function renderSuggestions() {
-  const list = document.getElementById('nearbyLocations');
-  if (!list) return;
-  list.innerHTML = places.slice(0, 5).map((place, index) => `
-    <button class="address-nearby-option" type="button" data-location-index="${index}" aria-pressed="${place.address === selected.address}">
-      <svg viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1C5.9 1 1 5.8 1 11.8 1 20 12 29 12 29s11-9 11-17.2C23 5.8 18.1 1 12 1Z" fill="currentColor"/><circle cx="12" cy="12" r="4" fill="white"/></svg>
-      <span><b>${escapeAddressText(place.name)}</b><small>${escapeAddressText(place.address)}</small></span>
-    </button>`).join('');
-}
-
-function escapeAddressText(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
-  })[character]);
-}
-
 function choose(place) {
   selected = { ...place };
   center = { lat: selected.lat, lon: selected.lon, zoom: Math.max(center.zoom, 16) };
   updateSelected();
-  renderSuggestions();
   render();
 }
 
@@ -173,7 +156,6 @@ async function selectMapCenter() {
   };
   places = [selected];
   updateSelected();
-  renderSuggestions();
   showFeedback('Finding the place under the pin…');
   try {
     const result = await geocoder(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=${center.lat}&lon=${center.lon}`);
@@ -188,7 +170,6 @@ async function selectMapCenter() {
     };
     places = [selected];
     updateSelected();
-    renderSuggestions();
     render();
     showFeedback('');
   } catch (error) {
@@ -200,7 +181,6 @@ async function selectMapCenter() {
     };
     places = [selected];
     updateSelected();
-    renderSuggestions();
     showFeedback(error.message);
   }
 }
@@ -274,11 +254,6 @@ document.getElementById('locationSearchForm')?.addEventListener('submit', async 
   }
 });
 
-document.getElementById('nearbyLocations')?.addEventListener('click', event => {
-  const button = event.target.closest('[data-location-index]');
-  if (button && places[Number(button.dataset.locationIndex)]) choose(places[Number(button.dataset.locationIndex)]);
-});
-
 document.getElementById('useCurrentLocation')?.addEventListener('click', () => {
   if (!navigator.geolocation) {
     showFeedback('Your browser does not support location sharing.');
@@ -318,7 +293,6 @@ document.querySelector('.address-sheet-handle')?.addEventListener('pointerdown',
   addEventListener('pointerup', stop, { once: true });
 });
 addEventListener('resize', scheduleRender);
-renderSuggestions();
 
 window.addressMapPicker = {
   open(address) {
@@ -336,7 +310,6 @@ window.addressMapPicker = {
     document.getElementById('locationSearchInput').value = '';
     showFeedback('');
     updateSelected();
-    renderSuggestions();
     requestAnimationFrame(render);
   },
   close() {
