@@ -1,0 +1,113 @@
+{
+  "_fonts-C9MNnjVw.css": {
+    "file": "assets/fonts-C9MNnjVw.css",
+    "src": "_fonts-C9MNnjVw.css"
+  },
+  "_instrument-sans-400-normal-D1W7dsQl.woff": {
+    "file": "assets/instrument-sans-400-normal-D1W7dsQl.woff",
+    "src": "_instrument-sans-400-normal-D1W7dsQl.woff"
+  },
+  "_instrument-sans-400-normal-DRC__1Mx.woff2": {
+    "file": "assets/instrument-sans-400-normal-DRC__1Mx.woff2",
+    "src": "_instrument-sans-400-normal-DRC__1Mx.woff2"
+  },
+  "_instrument-sans-500-normal-Dk9ku72i.woff2": {
+    "file": "assets/instrument-sans-500-normal-Dk9ku72i.woff2",
+    "src": "_instrument-sans-500-normal-Dk9ku72i.woff2"
+  },
+  "_instrument-sans-500-normal-Z6ESRlEs.woff": {
+    "file": "assets/instrument-sans-500-normal-Z6ESRlEs.woff",
+    "src": "_instrument-sans-500-normal-Z6ESRlEs.woff"
+  },
+  "_instrument-sans-600-normal-B7fBEWYG.woff2": {
+    "file": "assets/instrument-sans-600-normal-B7fBEWYG.woff2",
+    "src": "_instrument-sans-600-normal-B7fBEWYG.woff2"
+  },
+  "_instrument-sans-600-normal-B9e8oLYv.woff": {
+    "file": "assets/instrument-sans-600-normal-B9e8oLYv.woff",
+    "src": "_instrument-sans-600-normal-B9e8oLYv.woff"
+  },
+  "_theme-WBixagpZ.js": {
+    "file": "assets/theme-WBixagpZ.js",
+    "name": "theme"
+  },
+  "images/address-background.png": {
+    "file": "assets/address-background-IEfb2w0p.png",
+    "src": "images/address-background.png"
+  },
+  "images/order-page-background.svg": {
+    "file": "assets/order-page-background-COYjH76-.svg",
+    "src": "images/order-page-background.svg"
+  },
+  "images/tubipure-delivery.png": {
+    "file": "assets/tubipure-delivery-DhQJd3m1.png",
+    "src": "images/tubipure-delivery.png"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-COsl_nWQ.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/auth.css": {
+    "file": "assets/auth-TjqhpfeC.css",
+    "name": "auth",
+    "names": [
+      "auth.css"
+    ],
+    "src": "resources/css/auth.css",
+    "isEntry": true,
+    "assets": [
+      "assets/tubipure-delivery-DhQJd3m1.png"
+    ]
+  },
+  "resources/css/theme.css": {
+    "file": "assets/theme-JJD28Tgx.css",
+    "name": "theme",
+    "names": [
+      "theme.css"
+    ],
+    "src": "resources/css/theme.css",
+    "isEntry": true
+  },
+  "resources/css/tubipure.css": {
+    "file": "assets/tubipure-Dt-QaXx4.css",
+    "name": "tubipure",
+    "names": [
+      "tubipure.css"
+    ],
+    "src": "resources/css/tubipure.css",
+    "isEntry": true,
+    "assets": [
+      "assets/address-background-IEfb2w0p.png",
+      "assets/order-page-background-COYjH76-.svg"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BvRk9kiK.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/auth.js": {
+    "file": "assets/auth-DGB4se-O.js",
+    "name": "auth",
+    "src": "resources/js/auth.js",
+    "isEntry": true,
+    "imports": [
+      "_theme-WBixagpZ.js"
+    ]
+  },
+  "resources/js/tubipure.js": {
+    "file": "assets/tubipure-Ct6GENYJ.js",
+    "name": "tubipure",
+    "src": "resources/js/tubipure.js",
+    "isEntry": true,
+    "imports": [
+      "_theme-WBixagpZ.js"
+    ]
+  }
+}

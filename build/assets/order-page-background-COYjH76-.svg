@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bce7ff"/>
+      <stop offset="1" stop-color="#4aa9ec"/>
+    </linearGradient>
+    <linearGradient id="deepWater" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#60b8f0"/>
+      <stop offset="1" stop-color="#1684d4"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6fd13d"/>
+      <stop offset="1" stop-color="#168b36"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#fff" stop-opacity=".88"/>
+      <stop offset="1" stop-color="#d9efff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="280" cy="205" rx="490" ry="370" fill="url(#glow)"/>
+  <g opacity=".92">
+    <path d="M0 774C220 695 328 758 510 802c207 50 349-31 534-24 239 9 361 125 876 8v294H0Z" fill="#d8efff"/>
+    <path d="M0 850c212-136 407-52 592-13 206 44 338-57 529-42 270 22 444 167 799 55v230H0Z" fill="url(#water)"/>
+    <path d="M0 950c241-118 389-61 590-20 225 46 376-46 578-19 260 35 459 155 752 51v118H0Z" fill="url(#deepWater)"/>
+    <path d="M0 875c244-113 410-47 596-10 217 43 337-45 531-34 280 16 426 131 793 55" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="8"/>
+  </g>
+  <g fill="url(#leaf)" stroke="#187e35" stroke-opacity=".18" stroke-width="3">
+    <path d="M1595-28c92 12 188 63 241 155-102-29-180-72-241-155Z"/>
+    <path d="M1670-38c-14 75-1 155 51 229 21-89 11-164-51-229Z"/>
+    <path d="M1748-6c87 27 161 85 197 171-93-43-159-92-197-171Z"/>
+    <path d="M1835 7c-29 74-31 152 4 234 39-80 48-153-4-234Z"/>
+    <path d="M1547-12c-7 66 13 125 59 175 11-72-1-128-59-175Z"/>
+  </g>
+  <g fill="none" stroke="#fff" stroke-linecap="round" opacity=".88">
+    <path d="M1936 464c-101 55-131 132-204 179-60 39-96 44-147 104 71-8 127-9 188-50 75-51 99-116 163-156" stroke="url(#water)" stroke-width="30"/>
+    <path d="M1945 495c-89 52-118 113-192 161-47 31-83 41-120 76" stroke="#45a9e9" stroke-width="8"/>
+  </g>
+  <g fill="#fff" stroke="#2197df" stroke-width="5" opacity=".92">
+    <circle cx="1837" cy="473" r="12"/><circle cx="1885" cy="422" r="8"/><circle cx="1785" cy="538" r="7"/>
+    <circle cx="1917" cy="367" r="15"/><circle cx="1742" cy="589" r="10"/><circle cx="1874" cy="583" r="6"/>
+  </g>
+</svg>

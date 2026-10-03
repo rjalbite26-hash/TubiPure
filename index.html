@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="csrf-token" content="QWNL5UFDKVeVRTCACtQDkxENroXLjagb6sDICmbR">
+    <meta name="app-timezone" content="Asia/Manila">
+    <meta name="company-latitude" content="7.4288167">
+    <meta name="company-longitude" content="125.7984943">
+    <title>In-Order TubiPure — Water Delivery System</title>
+    <link rel="icon" type="image/png" href="https://rjalbite26-hash.github.io/TubiPure/images/tubipure-logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+    <script>
+        (() => {
+            try {
+                const theme = localStorage.getItem('tubipure-theme');
+                document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light';
+            } catch {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+    <link rel="preload" as="style" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/tubipure-Dt-QaXx4.css" /><link rel="modulepreload" as="script" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/tubipure-Ct6GENYJ.js" /><link rel="modulepreload" as="script" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/theme-WBixagpZ.js" /><link rel="stylesheet" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/tubipure-Dt-QaXx4.css" /><script type="module" src="https://rjalbite26-hash.github.io/TubiPure/build/assets/tubipure-Ct6GENYJ.js"></script><script id="browser-logger-active">
+(function() {
+    const ENDPOINT = 'https://rjalbite26-hash.github.io/TubiPure/_boost/browser-logs';
+    const logQueue = [];
+    let flushTimeout = null;
+    const captureTypes = ["error","warning","info","log","debug","table"];
+
+    console.log('🔍 Browser logger active (MCP server detected). Posting to: ' + ENDPOINT);
+
+    // Store original console methods
+    const originalConsole = {
+        log: console.log,
+        debug: console.debug,
+        info: console.info,
+        error: console.error,
+        warn: console.warn,
+        table: console.table
+    };
+
+    // Walk own enumerable keys so JSON.stringify cannot auto-invoke a proxy fake toJSON (e.g. Livewire's `$wire`) and fire a real request.
+    function toSafeValue(value, seen) {
+        if (value === null || typeof value !== 'object') {
+            return value;
+        }
+        if (value instanceof Error) {
+            return { name: value.name, message: value.message, stack: value.stack };
+        }
+        // Date has no own enumerable keys, so the walk below would collapse it to {}.
+        if (value instanceof Date) {
+            return value.toISOString();
+        }
+        if (seen.has(value)) {
+            return '[Circular]';
+        }
+        seen.add(value);
+        if (Array.isArray(value)) {
+            return value.map((item) => toSafeValue(item, seen));
+        }
+        const plain = {};
+        for (const key of Object.keys(value)) {
+            if (key === 'toJSON') continue;
+            try {
+                plain[key] = toSafeValue(value[key], seen);
+            } catch (e) {
+                plain[key] = '[Unreadable]';
+            }
+        }
+        return plain;
+    }
+
+    // Helper to safely stringify values
+    function safeStringify(obj) {
+        return JSON.stringify(toSafeValue(obj, new WeakSet()));
+    }
+
+    // Normalize log type for consistency (e.g., 'warn' to 'warning')
+    function normalizeType(type) {
+        return type === 'warn' ? 'warning' : type;
+    }
+
+    // Determine if a log type should be captured based on configured levels
+    function shouldCapture(type) {
+        return captureTypes.includes(normalizeType(type));
+    }
+
+    // Batch and send logs
+    function flushLogs() {
+        if (logQueue.length === 0) return;
+
+        const batch = logQueue.splice(0, logQueue.length);
+
+        fetch(ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ logs: batch })
+        }).catch(err => {
+            // Silently fail to avoid infinite loops
+            originalConsole.error('Failed to send logs:', err);
+        });
+    }
+
+    // Debounced flush (100ms)
+    function scheduleFlush() {
+        if (flushTimeout) clearTimeout(flushTimeout);
+        flushTimeout = setTimeout(flushLogs, 100);
+    }
+
+    // Intercept console methods
+    ['log', 'debug', 'info', 'error', 'warn', 'table'].forEach(method => {
+        console[method] = function(...args) {
+            // Call original method
+            originalConsole[method].apply(console, args);
+
+            // Capture log data
+            try {
+                if (!shouldCapture(method)) {
+                    return;
+                }
+
+                logQueue.push({
+                    type: method,
+                    timestamp: new Date().toISOString(),
+                    data: args.map(arg => {
+                        try {
+                            return typeof arg === 'object' ? JSON.parse(safeStringify(arg)) : arg;
+                        } catch (e) {
+                            return String(arg);
+                        }
+                    }),
+                    url: window.location.href,
+                    userAgent: navigator.userAgent
+                });
+
+                scheduleFlush();
+            } catch (e) {
+                // Fail silently
+            }
+        };
+    });
+
+    // Global error handlers for uncaught errors
+    const originalOnError = window.onerror;
+    window.onerror = function boostErrorHandler(errorMsg, url, lineNumber, colNumber, error) {
+        try {
+            if (shouldCapture('error')) {
+                logQueue.push({
+                    type: 'uncaught_error',
+                    timestamp: new Date().toISOString(),
+                    data: [{
+                        message: errorMsg,
+                        filename: url,
+                        lineno: lineNumber,
+                        colno: colNumber,
+                        error: error ? {
+                            name: error.name,
+                            message: error.message,
+                            stack: error.stack
+                        } : null
+                    }],
+                    url: window.location.href,
+                    userAgent: navigator.userAgent
+                });
+
+                scheduleFlush();
+            }
+
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Call original handler if it exists
+        if (originalOnError && typeof originalOnError === 'function') {
+            return originalOnError(errorMsg, url, lineNumber, colNumber, error);
+        }
+
+        // Let the error continue to propagate
+        return false;
+    }
+    window.addEventListener('error', (event) => {
+        try {
+            if (!shouldCapture('error')) {
+                return false;
+            }
+
+            logQueue.push({
+                type: 'window_error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: event.message,
+                    filename: event.filename,
+                    lineno: event.lineno,
+                    colno: event.colno,
+                    error: event.error ? {
+                        name: event.error.name,
+                        message: event.error.message,
+                        stack: event.error.stack
+                    } : null
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Let the error continue to propagate
+        return false;
+    });
+    window.addEventListener('unhandledrejection', (event) => {
+        try {
+            if (!shouldCapture('error')) {
+                return false;
+            }
+
+            logQueue.push({
+                type: 'error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: 'Unhandled Promise Rejection',
+                    reason: toSafeValue(event.reason, new WeakSet())
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Let the rejection continue to propagate
+        return false;
+    });
+
+    // Flush on page unload
+    window.addEventListener('beforeunload', () => {
+        if (logQueue.length > 0) {
+            navigator.sendBeacon(ENDPOINT, JSON.stringify({ logs: logQueue }));
+        }
+    });
+})();
+</script>
+</head>
+<body>
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Admin navigation" style="display: none;">
+        <div class="admin-sidebar-header">
+            <a class="admin-sidebar-brand" href="/TubiPure/#home" aria-label="TubiPure home">
+                <img src="https://rjalbite26-hash.github.io/TubiPure/images/tubipure-logo.png" alt="">
+                <span class="admin-sidebar-brand-copy"><b>TubiPure</b><small>Admin workspace</small></span>
+            </a>
+            <button class="admin-sidebar-toggle" id="adminSidebarToggle" type="button" aria-label="Collapse admin navigation" aria-controls="adminSidebar" aria-expanded="true" title="Collapse sidebar">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M8 4v12"/></svg>
+            </button>
+        </div>
+        <nav class="admin-sidebar-nav" aria-label="Admin sections">
+            <button class="admin-sidebar-link" type="button" data-route="dashboard" title="Overview"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="4" rx="1.5"/><rect x="13.5" y="10.5" width="7" height="10" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span><span class="admin-sidebar-label">Overview</span></button>
+            <button class="admin-sidebar-link admin-sidebar-orders-link" type="button" data-route="scheduler" title="Orders"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 8.5 4.8v9.4L12 22l-8.5-4.8V7.8L12 3Z"/><path d="m3.5 7.8 8.5 4.9 8.5-4.9M12 12.7V22M8 5.3l8.5 4.9"/></svg></span><span class="admin-sidebar-label">Orders</span><span class="admin-sidebar-order-count" id="adminPendingOrderCount" hidden aria-label="Active orders"></span></button>
+            <button class="admin-sidebar-link admin-sidebar-sub-link admin-sidebar-order-history-link" type="button" data-route="order-history" title="Order History"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v15H4z"/><path d="M8 3.5v4M16 3.5v4M4 10h16M8 14h3M8 17h6"/></svg></span><span class="admin-sidebar-label">Order History</span></button>
+            <button class="admin-sidebar-link" type="button" data-route="customers" title="Customer Records"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><span class="admin-sidebar-label">Customer Records</span></button>
+            <button class="admin-sidebar-link admin-sidebar-sub-link" type="button" data-route="users" title="Users"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 5.5a3 3 0 0 1 0 5.8M17 15a5 5 0 0 1 3.5 4.8"/></svg></span><span class="admin-sidebar-label">Users</span></button>
+            <button class="admin-sidebar-link" type="button" data-route="kmr" title="Pricing"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v4c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 9v4c0 1.7 3.6 3 8 3s8-1.3 8-3V9M4 13v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4"/></svg></span><span class="admin-sidebar-label">Pricing</span></button>
+            <button class="admin-sidebar-link" type="button" data-route="datetime" title="Date &amp; Time"><span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M12 13v4l2.5 1.5"/></svg></span><span class="admin-sidebar-label">Date &amp; Time</span></button>
+        </nav>
+        <div class="admin-sidebar-bottom">
+            <button class="admin-sidebar-create-report" id="adminCreateOrdersReport" type="button" title="Create orders report" aria-label="Create orders report"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8l4 4V20H6z"/><path d="M14 3.5v4h4M9 12h6M9 15.5h6M9 8.5h2"/></svg><span>Create Report</span></button>
+            <div class="admin-sidebar-account">
+            <button class="admin-sidebar-link admin-sidebar-home-link" type="button" data-route="home" title="Back to Home" aria-label="Back to Home">
+                <span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3.5 10 8.5-7 8.5 7M5.5 9v11h13V9M9 20v-6h6v6"/></svg></span>
+                <span class="admin-sidebar-label">Back to Home</span>
+            </button>
+            <div class="admin-sidebar-profile-wrap">
+              <button class="admin-sidebar-link admin-sidebar-profile-toggle" id="adminSidebarProfileToggle" type="button" title="Profile" aria-label="Open profile actions" aria-haspopup="true" aria-expanded="false" aria-controls="adminSidebarProfileMenu">
+                  <span class="admin-sidebar-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>
+                  <span class="admin-sidebar-label">Profile</span>
+                  <svg class="admin-sidebar-profile-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="admin-sidebar-profile-menu" id="adminSidebarProfileMenu" aria-label="Profile actions" hidden>
+                <button class="admin-sidebar-profile-menu-item" id="adminSidebarSettingsBtn" type="button" aria-expanded="false" aria-controls="adminSidebarSettingsSubmenu"><svg viewBox="0 0 24 24" aria-hidden="true"><mask id="adminSettingsGearHole"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="12" r="3.5" fill="#000"/></mask><g fill="currentColor" mask="url(#adminSettingsGearHole)"><circle cx="12" cy="12" r="8.2"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(45 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(90 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(135 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(180 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(225 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(270 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(315 12 12)"/></g></svg><span>Settings</span><svg class="admin-settings-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                <div class="admin-sidebar-settings-submenu" id="adminSidebarSettingsSubmenu" aria-label="Settings pages" hidden>
+                    <button class="admin-sidebar-profile-menu-item" type="button" data-route="profile"><span>Personal Information</span></button>
+                    <button class="admin-sidebar-profile-menu-item" type="button" data-route="change-password"><span>Change Password</span></button>
+                    <button class="admin-sidebar-profile-menu-item admin-sidebar-theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 0 1 8.6 3.6 8.5 8.5 0 1 0 20.4 15.4Z"/></svg>
+                        <span>Dark mode</span>
+                        <span class="admin-theme-toggle-state" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <button class="admin-sidebar-profile-menu-item admin-sidebar-logout" id="adminSidebarLogoutBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Log out</span></button>
+              </div>
+            </div>
+            </div>
+        </div>
+    </aside>
+    <button class="admin-sidebar-reopen" id="adminSidebarReopen" type="button" aria-label="Open admin navigation" aria-controls="adminSidebar" aria-expanded="false" title="Open sidebar">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M8 4v12"/></svg>
+    </button>
+    <button class="admin-sidebar-backdrop" id="adminSidebarBackdrop" type="button" aria-label="Close admin navigation" tabindex="-1"></button>
+    <nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/TubiPure/#home" aria-label="TubiPure home">
+      <span class="mark" aria-hidden="true">
+        <img src="/TubiPure/images/tubipure-logo.png" alt="">
+      </span>
+      <span class="brand-text">
+        <span class="name"><span class="tubi">Tubi</span><span class="pure">Pure</span></span>
+        <span class="tagline">Clean Water, Healthier You</span>
+      </span>
+    </a>
+    <div class="navlinks" id="navlinks">
+      <button class="mobile-account-link mobile-user-nav-link" id="navMobileProfileBtn" data-route="profile" type="button" style="display: none;">Profile</button>
+      <button data-route="home" class="active">Home</button>
+      <button id="navMyOrderBtn" data-customer-order-action style="">My Order</button>
+      <div class="mobile-account-links" id="mobileAccountLinks" aria-label="Account settings" style="display: none;">
+        <button class="mobile-account-link" id="navMobileAddressBtn" data-route="address" type="button">My Address</button>
+      </div>
+      <button data-route="contact">Contact</button>
+      <button data-route="about">About Us</button>
+      <button class="mobile-account-link mobile-user-nav-link mobile-settings-link" id="navMobileSettingsBtn" type="button" aria-expanded="false" aria-controls="mobileSettingsSubmenu" style="display: none;">Settings</button>
+      <div class="mobile-settings-submenu" id="mobileSettingsSubmenu" hidden>
+        <button class="mobile-account-link" type="button" data-route="profile">Personal Information</button>
+        <button class="mobile-account-link" type="button" data-route="change-password">Change Password</button>
+      </div>
+      <button class="mobile-account-link mobile-user-nav-link" id="navMobileLogoutBtn" type="button" style="display: none;">Log Out</button>
+      <div class="mobile-auth-links" aria-label="Account links">
+        <a class="mobile-auth-link" href="https://rjalbite26-hash.github.io/TubiPure/login">Login</a>
+        <a class="mobile-auth-link" href="https://rjalbite26-hash.github.io/TubiPure/signup">Sign up</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="nav-dashboard" id="navDashboardBtn" data-route="dashboard" data-staff-route type="button" aria-label="Dashboard" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="3" width="8" height="5" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="10" width="8" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="13" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Dashboard</span>
+        <strong class="dashboard-notification-badge" id="dashboardNotificationBadge" style="display:none;" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5.5v8" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.5" fill="currentColor"/></svg></strong>
+      </button>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode" aria-pressed="false">
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 018.6 3.6 8.5 8.5 0 1020.4 15.4Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="bell" id="bellBtn" aria-label="Notifications" aria-expanded="false" style="display: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="dot" id="bellDot" style="display:none;" aria-hidden="true"></span>
+      </button>
+      <div class="notif-panel" id="notifPanel">
+        <div class="notif-heading">
+          <h4 id="notifTitle">Delivery reminders</h4>
+          <button type="button" class="notif-mark-read" id="markNotificationsRead">Mark all as read</button>
+        </div>
+        <div id="notifList"></div>
+      </div>
+      <button class="nav-cta" id="navCtaBtn" data-customer-order-action aria-label="Order now" style="">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="21" r="1.4" fill="currentColor"/><circle cx="18" cy="21" r="1.4" fill="currentColor"/><path d="M2.5 3h2l2.3 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Order Now
+      </button>
+      <div class="nav-profile-wrap" id="navProfileMenuWrap" style="display: none;">
+        <button class="nav-profile" id="navProfileBtn" type="button" aria-label="Open account menu" title="Account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="navProfileMenu">
+          <span class="nav-profile-avatar" id="navProfileAvatar" aria-hidden="true"></span>
+        </button>
+        <div class="nav-profile-menu" id="navProfileMenu" role="menu" aria-labelledby="navProfileBtn" hidden>
+          <div class="nav-profile-menu-header">
+            <span id="navProfileMenuName"></span>
+            <small id="navProfileMenuRole"></small>
+          </div>
+          <button type="button" id="navProfileSettingsBtn" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-controls="navSettingsSubmenu">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><mask id="customerSettingsGearHole"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="12" r="3.5" fill="#000"/></mask><g fill="currentColor" mask="url(#customerSettingsGearHole)"><circle cx="12" cy="12" r="8.2"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(45 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(90 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(135 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(180 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(225 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(270 12 12)"/><rect x="9.8" y=".5" width="4.4" height="8" rx="1.5" transform="rotate(315 12 12)"/></g></svg>
+            <span>Settings</span>
+            <svg class="nav-settings-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="nav-settings-submenu" id="navSettingsSubmenu" role="group" aria-label="Settings pages" hidden>
+            <button type="button" data-route="profile" role="menuitem">Personal Information</button>
+            <button type="button" data-route="change-password" role="menuitem">Change Password</button>
+          </div>
+          <button type="button" id="navProfileAddressBtn" data-route="address" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1116 0Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
+            <span>My Address</span>
+          </button>
+          <button type="button" id="navProfileLogoutBtn" class="nav-profile-logout" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 17l5-5-5-5m5 5H3m9-9h5a3 3 0 013 3v12a3 3 0 01-3 3h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Log Out</span>
+          </button>
+        </div>
+      </div>
+      <div class="nav-auth">
+        <a href="https://rjalbite26-hash.github.io/TubiPure/login">Login</a>
+        <a href="https://rjalbite26-hash.github.io/TubiPure/signup">Sign up</a>
+      </div>
+      <button class="navToggle" id="navToggle" aria-label="Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+        <section class="page active" id="page-home">
+  <div class="hero-v2">
+    <div class="wrap hero-v2-inner">
+      <div>
+        <div class="hero-eyebrow-v2"><span class="dash"></span>Pure Water Delivery</div>
+        <h1 class="hero-v2-h1">Fresh &amp; Clean Water<span>Delivered to Your Door</span></h1>
+        <p class="hero-v2-p">TubiPure provides safe, high-quality drinking water with fast and reliable delivery. Order now and enjoy clean, refreshing water — anytime, anywhere.</p>
+        <div class="hero-feat-row">
+          <div class="hf-item">
+            <div class="hf-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2L43 9v13c0 11-8 18-19 24C13 40 5 33 5 22V9Z" fill="currentColor"/><path d="m15 23 6 6 13-14" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <b>Safe &amp; Clean</b><span>Premium quality water</span>
+          </div>
+          <div class="hf-item">
+            <div class="hf-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 4h16l24 24a4 4 0 010 6L32 47a4 4 0 01-6 0L2 23V7a3 3 0 013-3Z" fill="currentColor"/><circle cx="12" cy="13" r="3" fill="white"/></svg></div>
+            <b>Affordable Prices</b><span>Great value for your family</span>
+          </div>
+          <div class="hf-item">
+            <div class="hf-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M43 4C24 12 4 5 6 33c9-14 20-11 30-21C24 29 11 23 7 45c8-20 37-8 36-41Z" fill="currentColor"/></svg></div>
+            <b>Healthy Life</b><span>Clean water, better tomorrow</span>
+          </div>
+        </div>
+        <div class="hero-v2-cta">
+          <button class="btn btn-primary" id="heroOrderNowBtn" data-customer-order-action style="">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="21" r="1.4" fill="currentColor"/><circle cx="18" cy="21" r="1.4" fill="currentColor"/><path d="M2.5 3h2l2.3 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Order Now
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn btn-outline-blue" id="heroViewProductsBtn" data-customer-order-action type="button" style="">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            My Order
+          </button>
+        </div>
+      </div>
+      <div class="hero-v2-photo">
+        <img src="/TubiPure/images/tubipure-delivery.png" alt="TubiPure delivery tricycle loaded with water gallons outside the refilling station in Visayan Village, Tagum City">
+      </div>
+      <aside class="delivery-hours-card" aria-label="TubiPure station and delivery hours">
+        <div class="delivery-hours-card-heading">
+          <div><span class="delivery-hours-eyebrow">PLAN YOUR REFILL</span><h2>Delivery hours</h2></div>
+          <span class="delivery-open-status is-open" id="deliveryOpenStatus" aria-live="polite"><span class="delivery-open-status-dot"></span><span id="deliveryOpenStatusText">Open now · closes 6:00 PM</span></span>
+        </div>
+        <div class="delivery-hours-row"><span>Delivery available</span><strong id="homeDeliveryHours">7:00 AM – 4:00 PM</strong></div>
+        <div class="delivery-hours-row"><span>Station hours</span><strong id="homeStationHours">6:00 AM – 6:00 PM</strong></div>
+      </aside>
+    </div>
+    <svg class="hero-wave" viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#009FEF"/>
+          <stop offset="1" stop-color="#0063bb"/>
+        </linearGradient>
+      </defs>
+      <path d="M0,32 C260,155 370,18 620,38 C850,48 980,165 1190,94 C1290,60 1380,8 1440,0 L1440,160 L0,160 Z" fill="#BFE3F7"/>
+      <path d="M0,43 C260,166 370,29 620,49 C850,59 980,176 1190,105 C1290,71 1380,19 1440,11 L1440,160 L0,160 Z" fill="url(#waveGrad)"/>
+    </svg>
+  </div>
+
+  <div class="intro">
+    <div class="wrap">
+      <div class="intro-copy">
+        <h2>Clean water, close to home</h2>
+        <p>TubiPure is a water refilling station based in Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte, serving households and businesses with alkaline and purified drinking water. This system helps our riders and staff keep every order, schedule, and delivery zone organized — no paper logs required.</p>
+      </div>
+      <section class="intro-water-guide" aria-labelledby="waterGuideTitle">
+        <div class="intro-water-guide-heading">
+          <span>WATER GUIDE</span>
+          <h3 id="waterGuideTitle">Two ways to refresh</h3>
+          <p>Choose the water that best suits your taste.</p>
+        </div>
+        <div class="intro-water-options">
+          <article class="intro-water-option intro-water-option-alkaline">
+            <span class="intro-water-mark" aria-hidden="true">A</span>
+            <div><h4>Alkaline</h4><p>A higher-pH profile with a smooth, mineral-balanced taste.</p></div>
+            <span class="intro-water-detail">SMOOTH &amp; MINERAL-BALANCED</span>
+          </article>
+          <article class="intro-water-option intro-water-option-purified">
+            <span class="intro-water-mark" aria-hidden="true">P</span>
+            <div><h4>Purified</h4><p>Carefully filtered for a crisp, clean, refreshing taste.</p></div>
+            <span class="intro-water-detail">CRISP &amp; CLEAN</span>
+          </article>
+        </div>
+      </section>
+      <div class="intro-stats">
+        <div class="stat-box"><div class="num" id="introCustomers">0</div><div class="lbl">Customers served</div></div>
+        <div class="stat-box"><div class="num" id="introToday">0</div><div class="lbl">Deliveries today</div></div>
+        <div class="stat-box"><div class="num" id="introGallons">0</div><div class="lbl">Gallons this week</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="home-pricing" aria-labelledby="homePricingTitle">
+    <div class="wrap">
+      <div class="home-pricing-heading">
+        <span class="home-pricing-eyebrow">CLEAR, SIMPLE RATES</span>
+        <h2 id="homePricingTitle">Water pricing</h2>
+        <p>Choose the water you need. Delivery is priced by the distance to your address.</p>
+      </div>
+      <div class="home-pricing-grid">
+        <article class="home-pricing-card">
+          <span class="home-pricing-label">ALKALINE</span>
+          <h3>Alkaline water</h3>
+          <p class="home-pricing-price" id="homeAlkalinePrice" aria-live="polite">Loading price…</p>
+          <span class="home-pricing-unit">per gallon</span>
+        </article>
+        <article class="home-pricing-card">
+          <span class="home-pricing-label">PURIFIED</span>
+          <h3>Purified water</h3>
+          <p class="home-pricing-price" id="homePurifiedPrice" aria-live="polite">Loading price…</p>
+          <span class="home-pricing-unit">per gallon</span>
+        </article>
+        <article class="home-pricing-card home-delivery-pricing-card">
+          <span class="home-pricing-label">DELIVERY</span>
+          <h3>Distance-based delivery</h3>
+          <p class="home-pricing-price" id="homeDeliveryPrice" aria-live="polite">Loading rate…</p>
+          <span class="home-pricing-unit">per kilometer</span>
+          <p class="home-pricing-note">Your delivery fee depends on the distance from TubiPure to your saved address.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="features" id="featuresSection">
+    <div class="wrap">
+      <h2>How to place and track your order</h2>
+      <p>Follow these steps to order water and check its progress afterward.</p>
+      <div class="feat-grid">
+        <article class="feat-card tutorial-card">
+          <div class="ic" style="background:var(--deep);" aria-hidden="true">1</div>
+          <h3>Choose your water</h3>
+          <p>Sign in, select alkaline, purified, or both, then enter your quantities and choose delivery or pickup.</p>
+          <button class="tutorial-action" id="tutorialPlaceOrderBtn" data-customer-order-action type="button">Start an order →</button>
+        </article>
+        <article class="feat-card tutorial-card">
+          <div class="ic" style="background:var(--blue);" aria-hidden="true">2</div>
+          <h3>Review and send</h3>
+          <p>Check your address, schedule, water subtotal, and delivery fee. Submit the request and confirm the order.</p>
+        </article>
+        <article class="feat-card tutorial-card">
+          <div class="ic" style="background:var(--leaf);" aria-hidden="true">3</div>
+          <h3>View your order</h3>
+          <p>Open My Orders to see your order details and follow its status as the team approves and delivers it.</p>
+          <button class="tutorial-action" id="tutorialViewOrdersBtn" data-customer-order-action type="button">Open My Orders →</button>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+    <section class="page" id="page-dashboard">
+  <div class="page-head"><div class="wrap">
+    <div class="dashboard-page-heading">
+      <div><h1>Overview</h1><p>A quick snapshot of TubiPure's operations.</p></div>
+      <div class="dashboard-date" aria-label="Today's date">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M16 3v4M8 3v4M3 10h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 14h3m-3 3h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span><small>Today</small><strong id="dashboardDate">—</strong></span>
+      </div>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <section class="dashboard-upcoming-reminder" id="dashboardUpcomingReminder" aria-labelledby="dashboardReminderTitle" hidden>
+      <span class="dashboard-reminder-bell" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9ZM10 21h4"/></svg></span>
+      <span class="dashboard-reminder-divider" aria-hidden="true"></span>
+      <div class="dashboard-reminder-copy">
+        <h2 id="dashboardReminderTitle">Upcoming Delivery Reminder</h2>
+        <p id="dashboardReminderInstruction"></p>
+        <div class="dashboard-reminder-details">
+          <span class="dashboard-reminder-schedule"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Scheduled delivery: <strong id="dashboardReminderScheduledTime"></strong></span></span>
+          <span class="dashboard-reminder-sent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h12v11H3zM15 11h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/></svg><span>Reminder sent at <strong id="dashboardReminderSentAt"></strong> (1 hour before).</span></span>
+        </div>
+      </div>
+      <span class="dashboard-reminder-due" id="dashboardReminderDue"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span></span></span>
+      <button class="dashboard-reminder-view" id="dashboardReminderViewOrder" type="button">View Order <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+    </section>
+    <section class="dashboard-revenue-grid" aria-label="Revenue summary">
+      <article class="card dashboard-revenue-card dashboard-revenue-water" aria-labelledby="dashboardWaterTitle">
+        <span class="dashboard-revenue-icon" aria-hidden="true"><img src="/TubiPure/images/water-gallon-icon.png" alt=""></span>
+        <h2 id="dashboardWaterTitle">Water Sales</h2>
+        <strong id="dashboardWaterRevenue">₱0.00</strong>
+        <span class="dashboard-revenue-description">From gallon orders</span>
+        <svg class="dashboard-revenue-watermark" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 19c4-5 7-6 11-4s6 1 9-3v10H2z"/></svg>
+      </article>
+      <article class="card dashboard-revenue-card dashboard-revenue-fees" aria-labelledby="dashboardFeesTitle">
+        <span class="dashboard-revenue-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M4 12h25v22H4zM29 19h8l7 8v7H29z"/><circle cx="14" cy="36" r="4"/><circle cx="36" cy="36" r="4"/><path d="M8 18h13M8 23h9"/></svg></span>
+        <h2 id="dashboardFeesTitle">Delivery Fees</h2>
+        <strong id="dashboardShippingCost">₱0.00</strong>
+        <span class="dashboard-revenue-description">Collected from deliveries</span>
+        <svg class="dashboard-revenue-watermark" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 12h25v22H4zM29 19h8l7 8v7H29z"/><circle cx="14" cy="36" r="4"/><circle cx="36" cy="36" r="4"/></svg>
+      </article>
+      <article class="card dashboard-revenue-card dashboard-revenue-total" aria-labelledby="dashboardTotalTitle">
+        <span class="dashboard-revenue-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M14 13c0-4 4-7 10-7s10 3 10 7M13 14h22l7 9-8 17H14L6 23z"/><path d="M24 18v18m5-13c0-2-2-3-5-3s-5 1-5 3 2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3"/></svg></span>
+        <h2 id="dashboardTotalTitle">Total Revenue</h2>
+        <strong id="dashboardOverallTotal">₱0.00</strong>
+        <span class="dashboard-revenue-description">Water sales + delivery fees</span>
+        <svg class="dashboard-revenue-watermark" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 40h7V26H5zM18 40h7V17h-7zM31 40h7V8h-7zM34 5l8 1-1 8"/></svg>
+      </article>
+    </section>
+    <div class="dashboard-content-grid">
+      <div class="card chart-wrap dashboard-volume-card">
+        <div class="dashboard-volume-heading">
+          <div class="dashboard-volume-copy">
+            <h2>Delivery Volume</h2>
+            <p>Track the number of gallons delivered over time.</p>
+          </div>
+          <div class="dashboard-volume-controls">
+            <div class="dashboard-chart-type" role="group" aria-label="Delivery volume chart type">
+              <button class="is-active" type="button" data-volume-chart-type="line" aria-pressed="true">Line Chart</button>
+              <button type="button" data-volume-chart-type="area" aria-pressed="false">Area Chart</button>
+              <button type="button" data-volume-chart-type="bar" aria-pressed="false">Bar Graph</button>
+            </div>
+            <label><span class="sr-only">Delivery volume time range</span><select id="deliveryVolumeRange" aria-label="Delivery volume time range"><option value="day">Last 7 Days</option><option value="week">By Week</option><option value="month">By Month</option><option value="year">By Year</option></select></label>
+            <label><span class="sr-only">Water type</span><select id="deliveryVolumeWaterType" aria-label="Filter by water type"><option value="all">All Water</option><option value="alkaline">Alkaline</option><option value="purified">Purified</option></select></label>
+          </div>
+        </div>
+        <div class="dashboard-volume-stats" aria-live="polite">
+          <div class="dashboard-volume-stat dashboard-volume-stat-total"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h12v12H3zM15 10h4l3 3v5h-7z"/><circle cx="7" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg><span><strong id="volumeTotalDelivered">0 gal</strong><small>Total Delivered</small></span></div>
+          <div class="dashboard-volume-stat dashboard-volume-stat-average"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V11h4v9M10 20V7h4v13M17 20V3h4v17"/></svg><span><strong id="volumeAveragePerDay">0 gal</strong><small>Average per day</small></span></div>
+          <div class="dashboard-volume-stat dashboard-volume-stat-high"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M5 4h14v4a7 7 0 0 1-14 0V4ZM5 6H3v2a4 4 0 0 0 4 4m12-6h2v2a4 4 0 0 1-4 4"/></svg><span><strong id="volumeHighestDay">0 gal</strong><small>Highest in a day</small></span></div>
+        </div>
+        <canvas id="volChart" width="640" height="230" role="img" aria-label="Gallons delivered over the last seven days"></canvas>
+        <div class="dashboard-volume-legend" id="dashboardVolumeLegend" aria-label="Chart legend"></div>
+      </div>
+      <div class="card dashboard-status-card">
+        <div class="section-title"><h2>Order status summary</h2></div>
+        <div class="dashboard-status-content">
+          <div class="dashboard-donut" id="statusDonut" role="img" aria-label="Order status breakdown"><div><strong id="statusTotal">0</strong><span>Total orders</span></div></div>
+          <div class="dashboard-status-list" id="statusSummary"></div>
+        </div>
+      </div>
+      <div class="kpi-grid dashboard-kpi-grid" id="kpiGrid"></div>
+      <div class="card dashboard-table-card">
+        <div class="section-title"><h2>Today's deliveries</h2><button class="dashboard-view-all" type="button" data-route="scheduler">View all →</button></div>
+        <div class="table-wrap dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>#</th><th>Customer</th><th>Gallons</th><th>Time</th><th>Location</th><th>Status</th></tr></thead><tbody id="todayDeliveriesBody"></tbody></table></div>
+        <div class="dashboard-empty" id="todayDeliveriesEmpty" hidden>No deliveries scheduled today.</div>
+      </div>
+      <div class="dashboard-side-stack">
+        <div class="card dashboard-recent-card">
+          <div class="section-title"><h2>Recent orders</h2><button class="dashboard-view-all" type="button" data-route="scheduler">View all →</button></div>
+          <div class="table-wrap dashboard-table-wrap"><table class="dashboard-table dashboard-compact-table"><thead><tr><th>#</th><th>Customer</th><th>Gallons</th><th>Total</th><th>Status</th><th>Date</th></tr></thead><tbody id="recentOrdersBody"></tbody></table></div>
+          <div class="dashboard-empty" id="recentOrdersEmpty" hidden>No orders yet.</div>
+        </div>
+        <div class="card dashboard-zones-card">
+          <div class="section-title"><h2>Delivery zones / pricing</h2><button class="dashboard-view-all" type="button" data-route="kmr">View all →</button></div>
+          <div class="table-wrap dashboard-table-wrap"><table class="dashboard-table dashboard-compact-table"><thead><tr><th>Zone</th><th>Distance</th><th>Delivery fee</th><th>Coverage</th></tr></thead><tbody id="dashboardZonesBody"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+    <section class="page" id="page-customers">
+  <div class="page-head"><div class="wrap">
+    <div><h1>Customer Records</h1><p>View and manage TubiPure customer information and order history.</p></div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <div class="kpi-grid customer-kpi-grid" id="customerKpiGrid"></div>
+    <div class="customer-records-layout is-detail-closed">
+      <div class="customer-records-main">
+        <div class="card customer-records-toolbar-card">
+          <div class="customer-records-toolbar">
+            <label class="search-box customer-records-search">
+              <svg class="si" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <input type="search" id="custSearch" placeholder="Search by name, address, or contact number..." aria-label="Search customer records">
+            </label>
+            <select class="customer-sort-select" id="custSort" aria-label="Sort customers">
+              <option value="name">Sort: Name A–Z</option>
+              <option value="orders">Sort: Most orders</option>
+              <option value="last-order">Sort: Latest order</option>
+            </select>
+            <button class="customer-filter-toggle" id="customerFilterToggle" type="button" aria-label="Customer filters" title="Customer filters">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M7 12h10m-7 6h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="6" r="2" fill="var(--theme-surface)" stroke="currentColor" stroke-width="1.6"/><circle cx="15" cy="12" r="2" fill="var(--theme-surface)" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="18" r="2" fill="var(--theme-surface)" stroke="currentColor" stroke-width="1.6"/></svg>
+            </button>
+          </div>
+          <div class="customer-filter-pills" role="group" aria-label="Filter customers">
+            <button class="customer-filter-pill active" type="button" data-customer-filter="all">All customers</button>
+            <button class="customer-filter-pill" type="button" data-customer-filter="active">Active</button>
+            <button class="customer-filter-pill" type="button" data-customer-filter="pending">With pending orders</button>
+            <button class="customer-filter-pill" type="button" data-customer-filter="inactive">No recent orders</button>
+          </div>
+        </div>
+        <div class="card customer-records-table-card">
+          <div class="table-wrap customer-records-table-wrap">
+            <table class="customer-records-table">
+              <thead><tr><th>Customer</th><th>Address</th><th>Contact</th><th>Total orders</th><th>Last order</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="custTableBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="custEmpty" hidden>
+            <svg class="drop" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2C12 2 5 11 5 15.5C5 19.09 8.13 22 12 22C15.87 22 19 19.09 19 15.5C19 11 12 2 12 2Z" fill="currentColor"/></svg>
+            No customers match this search or filter.
+          </div>
+          <div class="customer-table-footer"><span id="customerPageSummary">Showing 0 customers</span><nav class="customer-pagination" id="customerPagination" aria-label="Customer pages"></nav></div>
+        </div>
+      </div>
+      <aside class="card customer-detail-panel" id="customerDetailPanel" aria-label="Customer details" hidden>
+        <button class="customer-detail-close" id="customerDetailClose" type="button" aria-label="Close customer details">×</button>
+        <div id="customerDetailContent"></div>
+      </aside>
+    </div>
+  </div></div>
+</section>
+    <section class="page" id="page-users">
+  <div class="page-head"><div class="wrap">
+    <div>
+      <h1>Users</h1>
+      <p>Manage registered app accounts.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <div class="users-kpi-grid" aria-label="User account summary">
+      <article class="users-kpi users-kpi-blue">
+        <span class="users-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-1.8a3.2 3.2 0 0 0-3.2-3.2H6.2A3.2 3.2 0 0 0 3 19.2V21M9.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM17 11a3 3 0 1 0 0-6M17 16h1a3 3 0 0 1 3 3v2"/></svg></span>
+        <span class="users-kpi-value" id="usersTotalCount">0</span><span class="users-kpi-label">Total users</span><span class="users-kpi-share" id="usersTotalShare">0%</span>
+        <svg class="users-kpi-watermark" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-1.8a3.2 3.2 0 0 0-3.2-3.2H6.2A3.2 3.2 0 0 0 3 19.2V21M9.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM17 11a3 3 0 1 0 0-6M17 16h1a3 3 0 0 1 3 3v2"/></svg>
+      </article>
+      <article class="users-kpi users-kpi-green">
+        <span class="users-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg></span>
+        <span class="users-kpi-value" id="usersActiveCount">0</span><span class="users-kpi-label">Active users</span><span class="users-kpi-share" id="usersActiveShare">0%</span>
+        <svg class="users-kpi-watermark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg>
+      </article>
+      <article class="users-kpi users-kpi-purple">
+        <span class="users-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2ZM19 8v6M16 11h6"/></svg></span>
+        <span class="users-kpi-value" id="usersNewMonthCount">0</span><span class="users-kpi-label">New this month</span><span class="users-kpi-share" id="usersNewMonthShare">0%</span>
+        <svg class="users-kpi-watermark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h3V12H4zM10.5 20h3V7h-3zM17 20h3V3h-3z"/></svg>
+      </article>
+      <article class="users-kpi users-kpi-red">
+        <span class="users-kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2ZM18 9l5 5M23 9l-5 5"/></svg></span>
+        <span class="users-kpi-value" id="usersDisabledCount">0</span><span class="users-kpi-label">Disabled users</span><span class="users-kpi-share" id="usersDisabledShare">0%</span>
+        <svg class="users-kpi-watermark" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-1.8a3.2 3.2 0 0 0-3.2-3.2H6.2A3.2 3.2 0 0 0 3 19.2V21M9.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM17 9l5 5M22 9l-5 5"/></svg>
+      </article>
+    </div>
+    <div class="card users-card">
+      <div class="users-toolbar">
+        <label class="search-box users-search">
+          <svg class="si" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" id="usersSearch" placeholder="Search by name, email, or contact number..." aria-label="Search users">
+        </label>
+        <select class="users-select" id="usersStatusFilter" aria-label="Filter users by status">
+          <option value="all">All statuses</option>
+          <option value="Active">Active</option>
+          <option value="Pending">Pending</option>
+          <option value="Disabled">Disabled</option>
+        </select>
+        <select class="users-select" id="usersSort" aria-label="Sort users">
+          <option value="newest">Sort: Newest</option>
+          <option value="oldest">Sort: Oldest</option>
+          <option value="name">Sort: Name A–Z</option>
+        </select>
+      </div>
+      <div class="table-wrap users-table-wrap">
+        <table class="users-table">
+          <thead><tr><th>User</th><th>Contact</th><th>Joined</th><th>Status</th></tr></thead>
+          <tbody id="usersTableBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="usersEmpty" hidden>No registered users match your search.</div>
+      <p class="users-feedback" id="usersFeedback" role="status" hidden></p>
+      <div class="users-table-footer"><span id="usersPageSummary">Showing 0 users</span></div>
+    </div>
+  </div></div>
+</section>
+    <section class="page" id="page-scheduler">
+  <div class="page-head orders-page-head"><div class="wrap">
+    <div class="orders-page-title">
+      <span class="orders-page-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2.8 8.2 4.7v9L12 21.2l-8.2-4.7v-9L12 2.8Z"/><path d="m3.8 7.5 8.2 4.8 8.2-4.8M12 12.3v8.9M8 5.1l8.2 4.8"/></svg></span>
+      <div><h1>Orders</h1><p>Manage customer orders and track their delivery status.</p></div>
+    </div>
+    <button class="btn btn-primary orders-add-order-button" id="addOrderButton" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Add Order
+    </button>
+  </div></div>
+  <div class="page-body orders-page-body"><div class="wrap">
+    <div class="orders-summary-grid" aria-label="Order summary">
+      <button class="orders-summary-card orders-summary-total is-active" type="button" data-orders-summary-filter="Pending" aria-pressed="true">
+        <span class="orders-summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="17" rx="2"/><path d="M9 3h6v4H9zM9 12h6M9 16h6"/></svg></span>
+        <span class="orders-summary-copy"><span>Pending Orders</span><strong id="ordersTotalCount">0</strong></span><span class="orders-summary-arrow" aria-hidden="true">›</span>
+        <span class="orders-summary-alert" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none"><path d="M12 5.5v8" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.5" fill="currentColor"/></svg></span>
+      </button>
+      <button class="orders-summary-card orders-summary-todeliver" type="button" data-orders-summary-filter="to-deliver" aria-pressed="false">
+        <span class="orders-summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h12v11H3zM15 11h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/></svg></span>
+        <span class="orders-summary-copy"><span>To Deliver</span><strong id="ordersToDeliverCount">0</strong></span><span class="orders-summary-arrow" aria-hidden="true">›</span>
+        <span class="orders-summary-alert" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none"><path d="M12 5.5v8" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.5" fill="currentColor"/></svg></span>
+      </button>
+      <button class="orders-summary-card orders-summary-out-for-delivery" type="button" data-orders-summary-filter="Out for Delivery" aria-pressed="false">
+        <span class="orders-summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h12v11H3zM15 11h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/></svg></span>
+        <span class="orders-summary-copy"><span>Out for Delivery</span><strong id="ordersOutForDeliveryCount">0</strong></span><span class="orders-summary-arrow" aria-hidden="true">›</span>
+        <span class="orders-summary-alert" aria-hidden="true" hidden><svg viewBox="0 0 24 24" fill="none"><path d="M12 5.5v8" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.5" fill="currentColor"/></svg></span>
+      </button>
+      <button class="orders-summary-card orders-summary-delivered" type="button" data-orders-summary-filter="Delivered" aria-pressed="false">
+        <span class="orders-summary-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></svg></span>
+        <span class="orders-summary-copy"><span>Delivered</span><strong id="ordersDeliveredCount">0</strong></span><span class="orders-summary-arrow" aria-hidden="true">›</span>
+      </button>
+    </div>
+
+    <div class="orders-toolbar">
+      <label class="orders-status-filter" for="delStatusFilter"><span class="sr-only">Filter orders by status</span>
+        <select class="filter" id="delStatusFilter">
+          <option value="Pending">Pending Orders</option>
+          <option value="to-deliver">To deliver</option>
+          <option value="Out for Delivery">Out for Delivery</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </label>
+      <label class="orders-search" for="delOrderSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><span class="sr-only">Search orders</span><input id="delOrderSearch" type="search" placeholder="Search by name, order #, or address…" autocomplete="off"></label>
+      <div class="orders-date-range" aria-label="Filter by order date range">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M16 3v4M8 3v4M3.5 10h17M8 14h3"/></svg>
+        <label><span class="sr-only">From date</span><input type="date" id="delDateFrom" aria-label="Orders from date"></label>
+        <span aria-hidden="true">–</span>
+        <label><span class="sr-only">To date</span><input type="date" id="delDateTo" aria-label="Orders to date"></label>
+      </div>
+    </div>
+
+    <div class="delivery-reminder-alert" id="deliveryReminderAlert" role="alert" aria-live="polite" hidden></div>
+    <div class="orders-queue-status" id="ordersQueueStatus" role="status" aria-live="polite"></div>
+    <div class="delivery-list orders-list" id="deliveryList"></div>
+    <div class="empty-state orders-empty" id="delEmpty" style="display:none;">No orders match these filters.</div>
+    <div class="orders-list-footer"><span id="ordersPageSummary" aria-live="polite">Showing 0 orders</span><nav class="orders-pagination" id="ordersPagination" aria-label="Order pages"></nav></div>
+  </div></div>
+</section>
+    <section class="page" id="page-order-history">
+  <div class="page-head orders-page-head"><div class="wrap">
+    <div class="orders-page-title">
+      <span class="orders-page-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v15H4z"/><path d="M8 3.5v4M16 3.5v4M4 10h16M8 14h3M8 17h6"/></svg></span>
+      <div><h1>Order History</h1><p>Review completed and rejected customer orders.</p></div>
+    </div>
+  </div></div>
+  <div class="page-body orders-page-body"><div class="wrap">
+    <div class="order-history-stats" aria-label="Order history summary">
+      <article class="order-history-stat"><span>Total history</span><strong id="orderHistoryTotal">0</strong></article>
+      <article class="order-history-stat order-history-stat-delivered"><span>Delivered</span><strong id="orderHistoryDelivered">0</strong></article>
+      <article class="order-history-stat order-history-stat-rejected"><span>Rejected</span><strong id="orderHistoryRejected">0</strong></article>
+    </div>
+    <div class="order-history-toolbar">
+      <label class="order-history-status-filter" for="orderHistoryStatusFilter"><span>Status</span>
+        <select id="orderHistoryStatusFilter"><option value="all">All history</option><option value="Delivered">Delivered</option><option value="Cancelled">Rejected</option></select>
+      </label>
+      <label class="order-history-search" for="orderHistorySearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg><input id="orderHistorySearch" type="search" placeholder="Search order, customer, or address" autocomplete="off"></label>
+    </div>
+    <div class="order-history-list" id="orderHistoryList" aria-live="polite"></div>
+    <p class="order-history-count" id="orderHistoryCount" aria-live="polite">Showing 0 historical orders</p>
+    <div class="order-history-empty" id="orderHistoryEmpty" hidden>No historical orders match your search.</div>
+  </div></div>
+</section>
+    <section class="page" id="page-kmr">
+  <div class="page-head"><div class="wrap">
+    <div>
+      <h1>Pricing &amp; Delivery Zones</h1>
+      <p>Manage water prices, delivery rates, and delivery zones.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <section class="pricing-settings-page" id="pricingSettingsPanel" style="display:none;" aria-labelledby="pricingSettingsTitle">
+      <form id="pricingSettingsForm" class="pricing-settings-layout">
+        <div class="pricing-settings-column">
+          <section class="card pricing-editor-card">
+            <div class="pricing-card-heading">
+              <span class="pricing-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/><path d="M9 16a3 3 0 0 0 3 3"/></svg></span>
+              <div><h2 id="pricingSettingsTitle">Water Pricing</h2><p>Set the price per gallon for each water type.</p></div>
+            </div>
+            <div class="pricing-input-grid">
+              <div class="pricing-field"><label for="alkalinePriceInput">Alkaline price per gallon (₱)</label><input type="number" name="alkaline_price_per_gallon" id="alkalinePriceInput" min="0.01" max="999999.99" step="0.01" required></div>
+              <div class="pricing-field"><label for="purifiedPriceInput">Purified price per gallon (₱)</label><input type="number" name="purified_price_per_gallon" id="purifiedPriceInput" min="0.01" max="999999.99" step="0.01" required></div>
+            </div>
+          </section>
+
+          <section class="card pricing-editor-card">
+            <div class="pricing-card-heading">
+              <span class="pricing-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h12v12H3zM15 10h4l3 3v5h-7z"/><circle cx="7" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg></span>
+              <div><h2>Delivery Pricing</h2><p>Delivery is calculated from the distance in kilometers.</p></div>
+            </div>
+            <div class="pricing-input-grid pricing-input-grid-single">
+              <div class="pricing-field"><label for="deliveryKmPriceInput">Price per kilometer (₱)</label><input type="number" name="delivery_price_per_km" id="deliveryKmPriceInput" min="0.01" max="999999.99" step="0.01" required></div>
+              <p class="pricing-calculation-note">Delivery fee = measured distance × price per kilometer</p>
+            </div>
+          </section>
+
+          <section class="card pricing-editor-card pricing-zones-card">
+            <div class="pricing-card-heading pricing-zones-heading">
+              <span class="pricing-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+              <div><h2>Delivery Zones</h2><p>Distance coverage used to identify delivery areas.</p></div>
+            </div>
+            <div class="pricing-zone-table-wrap"><table class="pricing-zone-table"><thead><tr><th>Zone</th><th>Distance range</th><th>Delivery rate</th></tr></thead><tbody id="pricingZonesTable"></tbody></table></div>
+          </section>
+
+        </div>
+
+        <aside class="card pricing-preview-card" aria-labelledby="pricingPreviewTitle">
+          <div class="pricing-preview-heading"><h2 id="pricingPreviewTitle">Current Settings Preview</h2><p>Here’s a summary of your current configuration.</p></div>
+          <section class="pricing-preview-group">
+            <div class="pricing-preview-group-heading"><span class="pricing-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></svg></span><h3>Water Pricing</h3></div>
+            <div class="pricing-preview-line"><span>Alkaline (per gallon)</span><strong id="previewAlkalinePrice">—</strong></div>
+            <div class="pricing-preview-line"><span>Purified (per gallon)</span><strong id="previewPurifiedPrice">—</strong></div>
+          </section>
+          <section class="pricing-preview-group">
+            <div class="pricing-preview-group-heading"><span class="pricing-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h12v12H3zM15 10h4l3 3v5h-7z"/><circle cx="7" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg></span><h3>Delivery Pricing</h3></div>
+            <div class="pricing-preview-line"><span>Price per kilometer</span><strong id="previewDeliveryRate">—</strong></div>
+          </section>
+          <section class="pricing-preview-group">
+            <div class="pricing-preview-group-heading"><span class="pricing-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>Delivery Zones</h3></div>
+            <div id="pricingPreviewZones"></div>
+          </section>
+          <div class="pricing-preview-actions"><button class="btn btn-ghost" id="resetPricingSettingsBtn" type="button">↻ <span>Reset Changes</span></button><button class="btn btn-primary" id="savePricingSettingsBtn" type="submit">▣ <span>Save Settings</span></button></div>
+          <p class="pricing-settings-feedback" id="pricingSettingsFeedback" aria-live="polite"></p>
+        </aside>
+      </form>
+    </section>
+
+    <details class="card pricing-estimator">
+      <summary>Delivery distance calculator</summary>
+      <div class="kmr-grid">
+        <div class="card">
+          <div class="section-title"><h2>Enter delivery distance</h2></div>
+          <div class="form-row"><label for="kmInput">Distance from station (km)</label><input type="number" id="kmInput" min="0" step="0.1" placeholder="e.g. 3.2"><div class="helper-text">Or pick a coverage zone below.</div></div>
+          <div class="zone-radios" id="zoneRadios"></div>
+        </div>
+        <div class="card kmr-result"><div class="zone-map" id="zoneMap"></div><div class="kmr-zone-lbl" id="resultZoneLbl">Zone A</div><div class="kmr-price" id="resultPrice">₱5<span>/ km</span></div><div class="helper-text" id="resultNote">Enter a distance or select a zone to calculate the delivery fee.</div><table class="tier-table" id="tierTable"></table></div>
+      </div>
+    </details>
+  </div></div>
+</section>
+    <section class="page" id="page-datetime">
+  <div class="page-head"><div class="wrap">
+    <div>
+      <h1>Date &amp; Time</h1>
+      <p>Set the days and hours when the station is open and deliveries are available.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <section class="datetime-settings-page" id="dateTimeSettingsPanel" style="display:none;" aria-label="Weekly operating hours">
+      <form id="dateTimeSettingsForm" class="datetime-settings-form">
+                  <section class="card datetime-schedule-card" aria-labelledby="station_scheduleTitle">
+            <div class="pricing-card-heading">
+              <span class="pricing-card-icon" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                              </span>
+              <div><h2 id="station_scheduleTitle">Station Hours</h2><p>Set when the water station is open for pickup.</p></div>
+            </div>
+            <div class="datetime-day-list">
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Monday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Monday"><span>Monday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleMondayOpenInput" data-schedule-time="station_schedule.Monday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleMondayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleMondayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleMondayCloseInput" data-schedule-time="station_schedule.Monday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleMondayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleMondayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Tuesday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Tuesday"><span>Tuesday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleTuesdayOpenInput" data-schedule-time="station_schedule.Tuesday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleTuesdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleTuesdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleTuesdayCloseInput" data-schedule-time="station_schedule.Tuesday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleTuesdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleTuesdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Wednesday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Wednesday"><span>Wednesday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleWednesdayOpenInput" data-schedule-time="station_schedule.Wednesday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleWednesdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleWednesdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleWednesdayCloseInput" data-schedule-time="station_schedule.Wednesday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleWednesdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleWednesdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Thursday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Thursday"><span>Thursday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleThursdayOpenInput" data-schedule-time="station_schedule.Thursday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleThursdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleThursdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleThursdayCloseInput" data-schedule-time="station_schedule.Thursday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleThursdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleThursdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Friday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Friday"><span>Friday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleFridayOpenInput" data-schedule-time="station_schedule.Friday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleFridayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleFridayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleFridayCloseInput" data-schedule-time="station_schedule.Friday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleFridayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleFridayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Saturday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Saturday"><span>Saturday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleSaturdayOpenInput" data-schedule-time="station_schedule.Saturday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleSaturdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleSaturdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleSaturdayCloseInput" data-schedule-time="station_schedule.Saturday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleSaturdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleSaturdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="station_schedule" data-schedule-day="Sunday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="station_schedule.Sunday"><span>Sunday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Opens</span>
+                      <input type="hidden" id="station_scheduleSundayOpenInput" data-schedule-time="station_schedule.Sunday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleSundayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleSundayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Closes</span>
+                      <input type="hidden" id="station_scheduleSundayCloseInput" data-schedule-time="station_schedule.Sunday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="station_scheduleSundayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="station_scheduleSundayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                          </div>
+          </section>
+                  <section class="card datetime-schedule-card" aria-labelledby="delivery_scheduleTitle">
+            <div class="pricing-card-heading">
+              <span class="pricing-card-icon" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24"><path d="M3 6h12v12H3zM15 10h4l3 3v5h-7z"/><circle cx="7" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg>
+                              </span>
+              <div><h2 id="delivery_scheduleTitle">Delivery Hours</h2><p>Set the days and times when delivery is available.</p></div>
+            </div>
+            <div class="datetime-day-list">
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Monday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Monday"><span>Monday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleMondayOpenInput" data-schedule-time="delivery_schedule.Monday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleMondayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleMondayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleMondayCloseInput" data-schedule-time="delivery_schedule.Monday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleMondayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleMondayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Tuesday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Tuesday"><span>Tuesday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleTuesdayOpenInput" data-schedule-time="delivery_schedule.Tuesday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleTuesdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleTuesdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleTuesdayCloseInput" data-schedule-time="delivery_schedule.Tuesday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleTuesdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleTuesdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Wednesday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Wednesday"><span>Wednesday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleWednesdayOpenInput" data-schedule-time="delivery_schedule.Wednesday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleWednesdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleWednesdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleWednesdayCloseInput" data-schedule-time="delivery_schedule.Wednesday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleWednesdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleWednesdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Thursday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Thursday"><span>Thursday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleThursdayOpenInput" data-schedule-time="delivery_schedule.Thursday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleThursdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleThursdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleThursdayCloseInput" data-schedule-time="delivery_schedule.Thursday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleThursdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleThursdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Friday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Friday"><span>Friday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleFridayOpenInput" data-schedule-time="delivery_schedule.Friday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleFridayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleFridayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleFridayCloseInput" data-schedule-time="delivery_schedule.Friday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleFridayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleFridayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Saturday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Saturday"><span>Saturday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleSaturdayOpenInput" data-schedule-time="delivery_schedule.Saturday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleSaturdayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleSaturdayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleSaturdayCloseInput" data-schedule-time="delivery_schedule.Saturday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleSaturdayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleSaturdayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                              <div class="datetime-day-row" data-schedule-row="delivery_schedule" data-schedule-day="Sunday">
+                  <label class="datetime-day-toggle"><input type="checkbox" data-schedule-open="delivery_schedule.Sunday"><span>Sunday</span></label>
+                  <div class="datetime-day-hours">
+                    <div class="datetime-time-field">
+                      <span>Available from</span>
+                      <input type="hidden" id="delivery_scheduleSundayOpenInput" data-schedule-time="delivery_schedule.Sunday.opens">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleSundayOpenInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleSundayOpenDisplay">06:00 AM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="datetime-time-field">
+                      <span>Available until</span>
+                      <input type="hidden" id="delivery_scheduleSundayCloseInput" data-schedule-time="delivery_schedule.Sunday.closes">
+                      <button class="pricing-time-trigger" type="button" data-settings-time-picker="delivery_scheduleSundayCloseInput" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="delivery_scheduleSundayCloseDisplay">06:00 PM</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    </div>
+                  </div>
+                  <span class="datetime-closed-label" hidden>Closed</span>
+                </div>
+                          </div>
+          </section>
+                <div class="datetime-settings-actions"><p id="dateTimeSettingsFeedback" aria-live="polite"></p><button class="btn btn-primary" id="saveDateTimeSettingsBtn" type="submit">Save Hours</button></div>
+      </form>
+    </section>
+  </div></div>
+</section>
+    <section class="page" id="page-myaccount">
+  <div class="page-head"><div class="wrap">
+    <div>
+      <h1 id="custViewTitle">My TubiPure</h1>
+      <p id="custViewSub">Check your orders, request a refill, and track your delivery.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+
+    <div class="card cust-login" id="custLoginCard">
+      <div class="ic-wrap">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.09 8.13 22 12 22C15.87 22 19 19.09 19 15.5C19 11 12 2 12 2Z" fill="currentColor"/></svg>
+      </div>
+      <h2 id="authFormTitle" style="font-size:18px; margin-bottom:6px;">Log in to your account</h2>
+      <p class="helper-text" id="authFormDescription" style="margin-bottom:18px;">Enter your email and password to continue.</p>
+      <div class="form-row auth-signup-field" style="display:none; text-align:left;">
+        <label for="signupName">Full name</label>
+        <input id="signupName" type="text" autocomplete="name" maxlength="255" placeholder="Your full name">
+      </div>
+      <div class="form-row auth-signup-field" style="display:none; text-align:left;">
+        <label for="signupAddress">Delivery address</label>
+        <input id="signupAddress" type="text" autocomplete="street-address" maxlength="255" placeholder="Purok / street, barangay">
+      </div>
+      <div class="form-row auth-signup-field" style="display:none; text-align:left;">
+        <label for="signupContact">Contact number</label>
+        <input id="signupContact" type="tel" autocomplete="tel" maxlength="11" placeholder="09XXXXXXXXX">
+      </div>
+      <div class="form-row auth-email-field" style="text-align:left;">
+        <label for="authEmail">Email address</label>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" maxlength="255">
+      </div>
+      <div class="form-row auth-password-field" style="text-align:left;">
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="10">
+      </div>
+      <div class="form-row auth-signup-field" style="display:none; text-align:left;">
+        <label for="signupPasswordConfirmation">Confirm password</label>
+        <input id="signupPasswordConfirmation" type="password" autocomplete="new-password" minlength="10" placeholder="Confirm your password">
+      </div>
+      <div class="form-row auth-reset-field" style="display:none; text-align:left;">
+        <label for="resetEmail">Email address</label>
+        <input id="resetEmail" type="email" autocomplete="email" placeholder="you@example.com" maxlength="255">
+      </div>
+      <div class="form-row auth-reset-field" style="display:none; text-align:left;">
+        <label for="resetPassword">New password</label>
+        <input id="resetPassword" type="password" autocomplete="new-password" minlength="10" placeholder="At least 10 characters">
+      </div>
+      <div class="form-row auth-reset-field" style="display:none; text-align:left;">
+        <label for="resetPasswordConfirmation">Confirm new password</label>
+        <input id="resetPasswordConfirmation" type="password" autocomplete="new-password" minlength="10" placeholder="Enter it again">
+      </div>
+      <button class="btn btn-primary" id="authSubmitBtn" style="width:100%; justify-content:center; margin-top:4px;">Log in</button>
+      <button class="switch-link" id="authForgotLink" style="display:block; margin:12px auto 0;">Forgot your password?</button>
+      <a class="switch-link" id="authSignupPageLink" href="https://rjalbite26-hash.github.io/TubiPure/signup" style="display:block; margin:12px auto 0;">New to TubiPure? Sign up</a>
+      <button class="switch-link" id="authReturnLogin" style="display:none; margin:12px auto 0;">Back to log in</button>
+      <p class="helper-text" id="authFeedback" role="status" aria-live="polite"></p>
+    </div>
+
+    <!-- signed-in view -->
+    <div id="custSignedIn" style="display:none;">
+      <div class="dash-grid customer-account-grid" style="margin-top:20px;">
+        <div>
+          <div class="customer-orders-page" id="myOrdersCard">
+            <div class="customer-orders-summary" aria-label="Order totals">
+              <article class="customer-orders-stat customer-orders-stat-total"><span class="customer-orders-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="14" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg></span><span><b id="cvTotalOrders">0</b><strong>Total Orders</strong><small>All your orders</small></span></article>
+              <article class="customer-orders-stat customer-orders-stat-active"><span class="customer-orders-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span><b id="cvActiveOrders">0</b><strong>Active Orders</strong><small>Pending, confirmed or in progress</small></span></article>
+              <article class="customer-orders-stat customer-orders-stat-delivered"><span class="customer-orders-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 6.5h12v11h-12zM14.5 10h4l3 3v4h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><span><b id="cvDeliveredOrders">0</b><strong>Delivered Orders</strong><small>Successfully delivered</small></span></article>
+            </div>
+            <div class="customer-orders-toolbar">
+              <div class="customer-orders-filters" id="cvHistoryFilters" role="group" aria-label="Filter orders">
+                <button class="customer-order-filter is-active" type="button" data-customer-order-filter="all">All Orders</button>
+                <button class="customer-order-filter" type="button" data-customer-order-filter="Pending">Pending</button>
+                <button class="customer-order-filter" type="button" data-customer-order-filter="Confirmed">Approved</button>
+                <button class="customer-order-filter" type="button" data-customer-order-filter="Out for Delivery">In Progress</button>
+                <button class="customer-order-filter" type="button" data-customer-order-filter="Delivered">Delivered</button>
+                <button class="customer-order-filter" type="button" data-customer-order-filter="Cancelled">Cancelled</button>
+              </div>
+              <div class="customer-orders-date-controls">
+                <label class="customer-orders-date-filter" for="cvHistoryDate"><span>Ordered date</span><input id="cvHistoryDate" type="date" aria-label="Filter orders by ordered date"></label>
+                <button class="customer-orders-date-clear" id="cvHistoryDateClear" type="button" hidden>Clear</button>
+              </div>
+              <label class="customer-orders-sort" for="cvHistorySort">Sort by
+                <select id="cvHistorySort" aria-label="Sort orders"><option value="newest">Newest First</option><option value="oldest">Oldest First</option></select>
+              </label>
+            </div>
+            <div id="cvHistory"></div>
+            <p class="customer-orders-count" id="cvHistoryCount" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+  <dialog class="cancel-order-dialog" id="cancelOrderDialog" aria-labelledby="cancelOrderTitle" aria-describedby="cancelOrderDescription">
+    <div class="cancel-order-dialog-card">
+      <button class="cancel-order-dialog-close" id="closeCancelOrderDialog" type="button" aria-label="Close confirmation">&times;</button>
+      <span class="cancel-order-dialog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2.8 19a1.4 1.4 0 0 0 1.2 2.1h16a1.4 1.4 0 0 0 1.2-2.1L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v4.5m0 3h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      <p class="cancel-order-dialog-eyebrow">Order cancellation</p>
+      <h2 id="cancelOrderTitle">Cancel this order?</h2>
+      <p id="cancelOrderDescription">Your order is awaiting admin approval. Once cancelled, it can’t be restored.</p>
+      <p class="cancel-order-dialog-number">Order <b id="cancelOrderNumber"></b></p>
+      <p class="cancel-order-dialog-feedback" id="cancelOrderDialogFeedback" role="status" aria-live="polite"></p>
+      <div class="cancel-order-dialog-actions">
+        <button class="btn btn-ghost" id="keepCustomerOrder" type="button" autofocus>Keep my order</button>
+        <button class="btn" id="confirmCancelCustomerOrder" type="button">Yes, cancel order</button>
+      </div>
+    </div>
+  </dialog>
+</section>
+    <section class="page order-page" id="page-order" data-village-area="[[125.81171344400002,7.445653374000074],[125.81806423100011,7.438120783000045],[125.813761397,7.417614409000066],[125.79592266300006,7.418316631000039],[125.78098642800012,7.429922518000069],[125.78956297900004,7.44135073700005],[125.80254559600007,7.438332185000036],[125.81171344400002,7.445653374000074]]">
+  <div class="page-head"><div class="wrap">
+    <div><h1>Place an order</h1><p>Choose your water and tell us when and where you’d like it.</p></div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <div class="order-login-note card" id="orderLoginNote" hidden>
+      <h2>Sign in to place your order</h2>
+      <p class="helper-text">Your order and delivery details are saved securely to your customer account.</p>
+      <a class="btn btn-primary" href="https://rjalbite26-hash.github.io/TubiPure/login?intent=order">Log in or sign up</a>
+    </div>
+    <dialog class="order-success-dialog" id="orderSuccessDialog" aria-labelledby="orderSuccessTitle" aria-describedby="orderSuccessMessage">
+      <div class="order-success" id="orderSuccess" role="status">
+        <div class="order-success-sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <button class="order-success-close" id="closeOrderSuccessBtn" type="button" aria-label="Close confirmation">×</button>
+        <span class="order-success-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="m13 24 7.5 7.5L35 17"/></svg></span>
+        <div class="order-success-copy"><h2 id="orderSuccessTitle">Order request received</h2><p id="orderSuccessMessage">We’ll confirm your order soon.</p></div>
+        <div class="order-success-total"><span class="order-success-total-icon" aria-hidden="true"><svg viewBox="0 0 40 48"><path d="M10 3h14l11 11v30H10z"/><path d="M24 3v12h11M16 24h13M16 31h13M16 38h9"/></svg></span><span><small>Order Total</small><strong id="orderSuccessTotal">₱0.00</strong></span></div>
+        <div class="order-success-actions"><button class="order-success-orders" id="orderViewHistoryBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>View my orders</button><button class="order-success-again" id="orderAgainBtn" type="button">Order Again</button></div>
+      </div>
+    </dialog>
+    <div class="order-shell" id="orderFormShell" hidden>
+      <form class="order-form" id="customerOrderForm" novalidate>
+        <div class="order-form-card">
+          <div class="order-section-head"><span>01</span><div><h2>Choose your water</h2><p>Choose one type or both. Set a separate quantity for alkaline and purified water when ordering both.</p></div></div>
+          <fieldset class="order-fieldset">
+            <legend>Water type</legend>
+            <div class="order-choice-grid order-water-type-grid">
+              <label class="order-choice"><input type="radio" name="water_selection" value="alkaline" required><span class="order-choice-copy"><b>Alkaline</b><small>Mineral-balanced everyday hydration</small></span><strong class="order-choice-price" id="alkalinePrice">₱50/gal</strong></label>
+              <label class="order-choice"><input type="radio" name="water_selection" value="purified"><span class="order-choice-copy"><b>Purified</b><small>Clean, refreshing drinking water</small></span><strong class="order-choice-price" id="purifiedPrice">₱25/gal</strong></label>
+              <label class="order-choice"><input type="radio" name="water_selection" value="both"><span class="order-choice-copy"><b>Both</b><small>Alkaline and purified</small></span></label>
+            </div>
+            <p class="order-field-error" data-error-for="water_selection"></p>
+          </fieldset>
+          <fieldset class="order-fieldset">
+            <input type="hidden" name="container_size_gallons" value="1">
+            <div class="order-quantity-single" id="singleQuantityField">
+              <div class="order-quantity">
+                <label class="order-quantity-label" for="orderQuantity">Gallons</label>
+                <div class="order-quantity-stepper">
+                  <button type="button" data-order-quantity-target="orderQuantity" data-quantity-step="-1" aria-label="Decrease gallons">−</button>
+                  <input type="number" name="quantity" id="orderQuantity" value="" min="1" max="50" required inputmode="numeric" aria-label="Gallons">
+                  <button type="button" data-order-quantity-target="orderQuantity" data-quantity-step="1" aria-label="Increase gallons">+</button>
+                </div>
+                <small>Number of gallons</small>
+              </div>
+            </div>
+            <div class="order-quantity-both" id="bothQuantityFields" hidden>
+              <div class="order-quantity">
+                <label class="order-quantity-label" for="alkalineQuantity">Alkaline gallons</label>
+                <div class="order-quantity-stepper">
+                  <button type="button" data-order-quantity-target="alkalineQuantity" data-quantity-step="-1" aria-label="Decrease alkaline gallons">−</button>
+                  <input type="number" name="alkaline_quantity" id="alkalineQuantity" value="" min="1" max="50" disabled inputmode="numeric" aria-label="Alkaline gallons">
+                  <button type="button" data-order-quantity-target="alkalineQuantity" data-quantity-step="1" aria-label="Increase alkaline gallons">+</button>
+                </div>
+                <small>Gallons of alkaline water</small>
+              </div>
+              <div class="order-quantity">
+                <label class="order-quantity-label" for="purifiedQuantity">Purified gallons</label>
+                <div class="order-quantity-stepper">
+                  <button type="button" data-order-quantity-target="purifiedQuantity" data-quantity-step="-1" aria-label="Decrease purified gallons">−</button>
+                  <input type="number" name="purified_quantity" id="purifiedQuantity" value="" min="1" max="50" disabled inputmode="numeric" aria-label="Purified gallons">
+                  <button type="button" data-order-quantity-target="purifiedQuantity" data-quantity-step="1" aria-label="Increase purified gallons">+</button>
+                </div>
+                <small>Gallons of purified water</small>
+              </div>
+            </div>
+            <p class="order-field-error" data-error-for="quantity"></p>
+            <p class="order-field-error" data-error-for="alkaline_quantity"></p>
+            <p class="order-field-error" data-error-for="purified_quantity"></p>
+          </fieldset>
+        </div>
+
+        <div class="order-form-card">
+          <div class="order-section-head"><span>02</span><div><h2>Delivery or pickup</h2><p>Choose how you’d like to receive your order.</p></div></div>
+          <fieldset class="order-fieldset">
+            <legend>Fulfillment method</legend>
+            <div class="order-choice-grid order-fulfillment-grid">
+              <label class="order-choice"><input type="radio" name="fulfillment_method" value="delivery" required><span class="order-choice-icon" aria-hidden="true">⌖</span><span><b>Delivery</b><small>Bring it to your address</small></span></label>
+              <label class="order-choice"><input type="radio" name="fulfillment_method" value="pickup"><span class="order-choice-icon" aria-hidden="true">⌂</span><span><b>Pickup</b><small>Collect from our station</small></span></label>
+            </div>
+          </fieldset>
+          <div class="form-row order-payment-field"><label for="orderPaymentMethod">Payment method</label><select name="payment_method" id="orderPaymentMethod" required><option value="" selected disabled>Choose a payment method</option><option value="cash_on_delivery">Cash on delivery</option></select><p class="order-time-help">Pay when your order arrives or when you pick it up.</p><p class="order-field-error" data-error-for="payment_method"></p></div>
+          <div class="order-delivery-fields" id="orderDeliveryFields">
+            <div class="order-input-grid">
+              <div class="form-row"><label id="orderAddressLabel" for="orderAddressTrigger">Delivery address</label><div class="order-address-select"><select class="order-address-native" name="delivery_address" id="orderAddress" tabindex="-1" aria-hidden="true"><option value="">Choose a saved address</option></select><button class="order-address-trigger" id="orderAddressTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="orderAddressOptions" aria-labelledby="orderAddressLabel"><span class="order-address-selected" aria-hidden="true"><span class="order-address-marquee" id="orderAddressMarquee"></span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="order-address-options" id="orderAddressOptions" role="listbox" aria-labelledby="orderAddressLabel" hidden></div></div><p class="order-field-error" data-error-for="delivery_address"></p><p class="order-address-empty" id="orderAddressEmpty" hidden>No saved addresses yet. <a href="#address" data-route="address">Add an address in My Address</a> before placing a delivery order.</p><a class="order-address-manage" href="#address" data-route="address">Manage saved addresses</a></div>
+              <div class="form-row" id="orderZoneField"><label>Delivery coverage</label><output class="order-coverage-result" id="orderCoverageResult">Choose a saved address to calculate coverage.</output><p class="order-coverage-detail" id="orderCoverageDetail"></p><input type="hidden" name="delivery_zone" id="orderZone"><p class="order-field-error" data-error-for="delivery_zone"></p></div>
+            </div>
+          </div>
+          <div class="order-pickup-note" id="orderPickupNote" hidden>
+            <b>Pickup location</b>
+            <span>Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte</span>
+            <a href="https://www.google.com/maps/place/Tubipure+Water+Refilling+Station/@7.4286962,125.798159,20z/data=!4m6!3m5!1s0x32f953001ebdfba3:0x72221dd436aa39f2!8m2!3d7.4288167!4d125.7984943!16s%2Fg%2F11nc1fmjg2" target="_blank" rel="noopener noreferrer">Open pickup location in Google Maps ↗</a>
+          </div>
+          <div class="order-input-grid order-schedule-grid">
+            <div class="form-row"><label for="orderDate">Preferred date</label><input type="date" name="date" id="orderDate" required><p class="order-field-error" data-error-for="date"></p></div>
+            <div class="form-row order-time-field"><label for="orderTimeTrigger">Preferred time</label><button class="order-time-trigger" id="orderTimeTrigger" type="button" aria-haspopup="dialog" aria-controls="orderTimeDialog"><span id="orderTimeDisplay">Choose a time</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><input type="hidden" name="time_slot" id="orderTime" value=""><p class="order-time-help" id="orderTimeHelp">Available from 7:00 AM to 4:00 PM</p><p class="order-field-error" data-error-for="time_slot"></p></div>
+          </div>
+        </div>
+
+        <div class="order-form-card">
+          <div class="order-section-head"><span>03</span><div><h2>Your contact details</h2><p>We’ll use these details to confirm and coordinate your order.</p></div></div>
+          <div class="order-input-grid">
+            <div class="form-row"><label for="orderContactName">Contact name</label><input name="contact_name" id="orderContactName" autocomplete="name" maxlength="255" required readonly><p class="order-field-error" data-error-for="contact_name"></p></div>
+            <div class="form-row"><label for="orderPhone">Contact number</label><input type="tel" name="contact_phone" id="orderPhone" autocomplete="tel" maxlength="40" placeholder="09XXXXXXXXX" required><p class="order-field-error" data-error-for="contact_phone"></p></div>
+          </div>
+          <div class="form-row order-instructions-row"><label for="orderInstructions">Delivery instructions <span>(optional)</span></label><textarea name="delivery_instructions" id="orderInstructions" rows="3" maxlength="1000" placeholder="Landmarks, gate details, or other helpful notes"></textarea><p class="order-field-error" data-error-for="delivery_instructions"></p></div>
+        </div>
+        <div class="order-feedback" id="orderFeedback" role="alert" hidden></div>
+        <div class="order-submit-row">
+          <p class="order-next-step"><span class="order-next-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.75h7l4 4v12.5H7z"/><path d="M14 3.75v4h4M9.5 12h6M9.5 15.5h6M9.5 9h1.5"/></svg></span><span><strong>Next step:</strong> Review your order before submitting.</span></p>
+          <button type="submit" class="btn btn-primary order-submit" id="orderSubmitBtn"><span>Send Order Request</span><span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </div>
+    <dialog class="order-summary-dialog" id="orderSummaryDialog" aria-labelledby="orderSummaryTitle">
+      <div class="order-summary-card">
+        <div class="order-summary-title"><span aria-hidden="true">◷</span><div><h2 id="orderSummaryTitle">Review your order</h2><p>Check your details before sending your request.</p></div></div>
+        <dl class="order-summary-list">
+          <div><dt>Water</dt><dd id="summaryWater">Purified</dd></div>
+          <div><dt>Water quantity</dt><dd id="summaryContainer">3 gallons</dd></div>
+          <div><dt>Total quantity</dt><dd id="summaryGallons">3 gallons</dd></div>
+          <div><dt>Water subtotal</dt><dd id="summaryWaterSubtotal">—</dd></div>
+          <div><dt>Fulfillment</dt><dd id="summaryFulfillment">Delivery · Zone A</dd></div>
+          <div><dt>Payment method</dt><dd id="summaryPaymentMethod">Cash on delivery</dd></div>
+          <div><dt>Address</dt><dd id="summaryAddress">Choose a saved address</dd></div>
+          <div><dt>Delivery fee</dt><dd id="summaryDeliveryFee">—</dd></div>
+          <div><dt>Schedule</dt><dd id="summarySchedule">Choose date and time</dd></div>
+        </dl>
+        <div class="order-total-row"><span>Estimated total</span><strong id="summaryTotal">₱75</strong></div>
+        <p class="order-summary-note" id="summaryNote">Delivery is calculated by distance at the configured rate per kilometer.</p>
+        <p class="order-privacy-note"><span aria-hidden="true">✓</span> Your contact details are shared only with our team to arrange this order.</p>
+        <div class="order-confirm-actions">
+          <button class="btn btn-ghost" id="orderEditBtn" type="button">Go back and edit</button>
+          <button class="btn btn-primary" id="orderConfirmBtn" type="button">Confirm and send</button>
+        </div>
+      </div>
+    </dialog>
+  </div></div>
+</section>
+    <section class="page" id="page-profile">
+  <div class="page-head"><div class="wrap">
+    <div class="dashboard-page-heading">
+      <button class="dashboard-back-button staff-only" data-route="dashboard" type="button" aria-label="Back to admin dashboard" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Back to Dashboard</span>
+      </button>
+      <h1>Personal Information</h1>
+      <p>Review and update the personal details associated with your TubiPure account.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <article class="card profile-card" aria-labelledby="profileName">
+      <div class="profile-heading">
+        <span class="avatar profile-avatar" id="profileAvatar" aria-hidden="true"></span>
+        <div class="profile-heading-copy">
+          <h2 id="profileName"></h2>
+          <span class="profile-role" id="profileRole"></span>
+        </div>
+        <button class="btn btn-outline profile-edit-trigger" id="editProfileButton" type="button">Edit profile</button>
+      </div>
+      <dl class="profile-details" id="profileDetails">
+        <div class="profile-detail">
+          <dt>Email address</dt>
+          <dd id="profileEmail"></dd>
+        </div>
+        <div class="profile-detail" id="profileContactRow" hidden>
+          <dt>Contact number</dt>
+          <dd id="profileContact"></dd>
+        </div>
+        <div class="profile-detail profile-detail-wide" id="profileAddressRow" hidden>
+          <dt>My Address</dt>
+          <dd id="profileAddress"></dd>
+          <a class="profile-address-manage" href="#address" data-route="address">Manage saved addresses</a>
+        </div>
+      </dl>
+      <form class="profile-edit-form" id="profileEditForm" hidden>
+        <div class="profile-edit-fields">
+          <div class="form-row" id="profileEditNameRow">
+            <label for="profileEditName">Full name</label>
+            <input id="profileEditName" name="name" type="text" autocomplete="name" maxlength="255" required>
+            <small class="err" data-error-for="name"></small>
+          </div>
+          <div class="form-row" id="profileEditEmailRow">
+            <label for="profileEditEmail">Email address</label>
+            <input id="profileEditEmail" name="email" type="email" autocomplete="email" maxlength="255" required>
+            <small class="err" data-error-for="email"></small>
+          </div>
+          <div class="form-row" id="profileEditContactField" hidden>
+            <label for="profileEditContact">Contact number</label>
+            <input id="profileEditContact" name="contact" type="tel" autocomplete="tel" inputmode="numeric" pattern="0[0-9]{10}" maxlength="11" placeholder="09XXXXXXXXX">
+            <small class="err" data-error-for="contact"></small>
+          </div>
+        </div>
+        <p class="profile-edit-feedback" id="profileEditFeedback" role="status" aria-live="polite" hidden></p>
+        <div class="profile-edit-actions">
+          <button class="btn btn-outline" id="cancelProfileEditButton" type="button">Cancel</button>
+          <button class="btn btn-primary" id="saveProfileButton" type="submit">Save changes</button>
+        </div>
+      </form>
+    </article>
+  </div></div>
+</section>
+    <section class="page" id="page-change-password">
+  <div class="page-head"><div class="wrap">
+    <div>
+      <h1>Change Password</h1>
+      <p>Update your password to keep your account secure.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <article class="card profile-card profile-password-card" aria-labelledby="passwordSettingsTitle">
+      <div class="profile-password-heading">
+        <div>
+          <h2 id="passwordSettingsTitle">Security</h2>
+          <p>Enter your current password, then choose a new one.</p>
+        </div>
+      </div>
+      <form class="profile-edit-form profile-password-form" id="changePasswordForm">
+        <div class="profile-edit-fields">
+          <div class="form-row">
+            <label for="currentPassword">Current password</label>
+            <input id="currentPassword" name="current_password" type="password" autocomplete="current-password" required>
+            <small class="err" data-error-for="current_password"></small>
+          </div>
+          <div class="form-row">
+            <label for="newPassword">New password</label>
+            <input id="newPassword" name="password" type="password" autocomplete="new-password" minlength="10" required>
+            <small class="err" data-error-for="password"></small>
+          </div>
+          <div class="form-row">
+            <label for="newPasswordConfirmation">Confirm new password</label>
+            <input id="newPasswordConfirmation" name="password_confirmation" type="password" autocomplete="new-password" minlength="10" required>
+          </div>
+        </div>
+        <p class="profile-edit-feedback" id="changePasswordFeedback" role="status" aria-live="polite" hidden></p>
+        <div class="profile-edit-actions">
+          <button class="btn btn-primary" id="changePasswordButton" type="submit">Change password</button>
+        </div>
+      </form>
+    </article>
+  </div></div>
+</section>
+    <section class="page" id="page-address">
+  <div class="address-page-map-background" aria-hidden="true">
+    <div class="address-page-background-image"></div>
+    <div class="address-page-map-wash"></div>
+  </div>
+  <div class="page-head"><div class="wrap">
+    <div>
+      <h1>My Address</h1>
+      <p>Your saved delivery address.</p>
+    </div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <article class="card profile-card" aria-labelledby="addressPageName">
+      <div class="profile-heading">
+        <span class="avatar profile-avatar" id="addressPageAvatar" aria-hidden="true"></span>
+        <div class="profile-heading-copy">
+          <h2 id="addressPageName"></h2>
+          <span class="profile-role">Delivery address</span>
+        </div>
+      </div>
+      <div class="address-manager">
+        <div class="address-manager-heading">
+          <p id="addressCount" class="helper-text">0 of 5 addresses saved</p>
+          <button class="btn btn-primary" type="button" id="addAddressBtn">Add address</button>
+        </div>
+        <div id="addressList" class="address-list" aria-live="polite"></div>
+      </div>
+    </article>
+  </div></div>
+  <dialog class="address-delete-dialog" id="addressDeleteDialog" aria-labelledby="addressDeleteTitle" aria-describedby="addressDeleteDescription">
+    <div class="address-delete-dialog-card">
+      <button class="address-delete-dialog-close" id="closeAddressDeleteDialog" type="button" aria-label="Close confirmation">&times;</button>
+      <span class="address-delete-dialog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2.8 19a1.4 1.4 0 0 0 1.2 2.1h16a1.4 1.4 0 0 0 1.2-2.1L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v4.5m0 3h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      <p class="address-delete-dialog-eyebrow">Saved address</p>
+      <h2 id="addressDeleteTitle">Delete this address?</h2>
+      <p id="addressDeleteDescription">This address will be removed from your saved addresses.</p>
+      <p class="address-delete-dialog-name" id="addressDeleteName"></p>
+      <p class="address-delete-dialog-feedback" id="addressDeleteFeedback" role="status" aria-live="polite"></p>
+      <div class="address-delete-dialog-actions">
+        <button class="btn btn-ghost" id="keepAddressButton" type="button" autofocus>Keep address</button>
+        <button class="btn" id="confirmDeleteAddressButton" type="button">Delete address</button>
+      </div>
+    </div>
+  </dialog>
+  <div class="address-picker" id="addressPicker" hidden>
+    <div class="address-picker-map" id="addressMap" role="application" aria-label="Interactive map. Drag or tap anywhere to place the pin and select that location.">
+      <div class="address-map-tiles" id="addressMapTiles"></div>
+      <div class="address-map-markers" id="addressMapMarkers"></div>
+      <span class="address-current-indicator" id="addressCurrentIndicator" hidden aria-label="Your current location"></span>
+      <div class="address-map-center-pin" aria-hidden="true"><svg viewBox="0 0 32 42"><path d="M16 1C7.7 1 1 7.6 1 15.8 1 27 16 41 16 41s15-14 15-25.2C31 7.6 24.3 1 16 1Z" fill="currentColor"/><circle cx="16" cy="16" r="5" fill="white"/></svg></div>
+      <div class="address-map-topbar">
+        <button type="button" class="address-map-back" id="closeAddressPicker" aria-label="Back to saved addresses"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6M9 12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <form class="address-map-search" id="locationSearchForm">
+          <span class="address-search-pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" fill="currentColor"/><circle cx="12" cy="10" r="2.5" fill="white"/></svg></span>
+          <input id="locationSearchInput" type="search" placeholder="Enter a location" autocomplete="off" aria-label="Search for a place">
+        </form>
+      </div>
+      <div class="address-map-controls">
+        <button type="button" id="zoomMapIn" aria-label="Zoom in">+</button>
+        <button type="button" id="zoomMapOut" aria-label="Zoom out">−</button>
+        <button type="button" class="address-current-location" id="useCurrentLocation" aria-label="Use my current location" title="Use my current location"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <a class="address-map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>
+      <p class="address-map-feedback" id="mapFeedback" role="status" aria-live="polite"></p>
+    </div>
+    <form id="addressForm" class="address-bottom-sheet">
+      <div class="address-sheet-handle" aria-hidden="true"><span></span></div>
+      <div class="address-selected-location">
+        <span class="address-selected-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" fill="currentColor"/><circle cx="12" cy="10" r="2.5" fill="white"/></svg></span>
+        <div><h2 id="selectedLocationName">Tubipure Water Refilling Station</h2><p id="addressInputText">Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte</p></div>
+      </div>
+      <p class="address-map-selection-hint">Drag or tap anywhere on the map to place the pin.</p>
+      <div class="address-nearby-heading"><h3>Nearby locations</h3><span>Tap to choose</span></div>
+      <div id="nearbyLocations" class="address-nearby-list"></div>
+      <div class="address-label-row"><label for="addressLabel">Save as</label><input id="addressLabel" name="label" maxlength="80" placeholder="Home, Work, etc." required></div>
+      <p id="addressFormFeedback" class="address-form-feedback" role="status" aria-live="polite"></p>
+      <button class="address-select-button" type="submit" id="saveAddressBtn">Select</button>
+    </form>
+  </div>
+</section>
+    <section class="page" id="page-about">
+  <div class="page-head"><div class="wrap">
+    <div><h1>About TubiPure</h1><p>Clean water, close to home in Tagum City.</p></div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <div class="intro about-intro">
+      <div class="about-grid">
+        <div class="card about-card">
+          <h2>Who we are</h2>
+          <p>TubiPure is a water refilling station based in Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte. We supply alkaline and purified drinking water to households and small businesses across the city, delivered fresh by our own riders on a schedule that fits your household's needs.</p>
+          <p>This In-Order TubiPure system is how our team keeps every customer, delivery, and pricing zone organized — so your refill arrives on time, every time.</p>
+        </div>
+        <div class="card about-card">
+          <h2>What we offer</h2>
+          <div class="mini-list">
+            <div class="mini-row"><span>Alkaline drinking water</span><span class="tag tag-delivered">Available</span></div>
+            <div class="mini-row"><span>Purified drinking water</span><span class="tag tag-delivered">Available</span></div>
+            <div class="mini-row"><span>Scheduled home delivery</span><span class="tag tag-delivered">Available</span></div>
+            <div class="mini-row"><span>Distance-based delivery pricing</span><span class="tag tag-delivered">Available</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+    <section class="page" id="page-contact">
+  <div class="page-head"><div class="wrap">
+    <div><h1>Contact TubiPure</h1><p>We'd love to hear from you — questions, feedback, or delivery concerns.</p></div>
+  </div></div>
+  <div class="page-body"><div class="wrap">
+    <div class="contact-info-grid">
+      <div class="card">
+        <div class="section-title"><h2>Get in touch directly</h2></div>
+        <div class="mini-list">
+          <div class="mini-row"><span>📍 Address</span><span>Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte</span></div>
+          <div class="mini-row"><span>📞 Phone</span><span>0946 947 5468</span></div>
+          <div class="mini-row"><span>✉️ Email</span><span>tubipurewater@gmail.com</span></div>
+          <div class="mini-row"><span>🕒 Hours</span><span>Mon–Sat 7AM–7PM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card contact-map">
+      <div class="section-title contact-directions-heading">
+        <div><h2>Find TubiPure</h2><p>See the route from your current location without leaving this page.</p></div>
+        <button class="btn btn-primary" id="showContactDirections" type="button">Show directions</button>
+      </div>
+      <p class="contact-directions-feedback" id="contactDirectionsFeedback" role="status" aria-live="polite">Choose “Show directions” and allow location access. Your location is sent to the routing service to calculate the route.</p>
+      <div class="contact-directions-summary" id="contactDirectionsSummary" hidden></div>
+      <div class="contact-directions-map" id="contactDirectionsMap" role="img" aria-label="Map showing directions to TubiPure Water Refilling Station">
+        <div class="contact-directions-tiles" id="contactDirectionsTiles" aria-hidden="true"></div>
+        <svg class="contact-directions-route" id="contactDirectionsRoute" aria-hidden="true"></svg>
+        <div class="contact-directions-markers" id="contactDirectionsMarkers" aria-hidden="true"></div>
+        <div class="contact-directions-attribution">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> · Routing by OSRM</div>
+      </div>
+      <ol class="contact-directions-steps" id="contactDirectionsSteps" aria-label="Route steps" hidden></ol>
+    </div>
+  </div></div>
+</section>
+    <dialog class="order-map-dialog" id="orderMapDialog" aria-labelledby="orderMapTitle">
+      <section class="order-map-card">
+        <header class="order-map-heading"><div><span id="orderMapEyebrow">ORDER LOCATION</span><h2 id="orderMapTitle">View location</h2><p id="orderMapAddress"></p></div><button id="closeOrderMap" type="button" aria-label="Close map">×</button></header>
+        <p class="order-map-feedback" id="orderMapFeedback" role="status" aria-live="polite"></p>
+        <div class="order-map-summary" id="orderMapSummary" hidden></div>
+        <div class="order-map-canvas" id="orderMapCanvas" aria-label="Order location map">
+          <div class="order-map-tiles" id="orderMapTiles" aria-hidden="true"></div>
+          <svg class="order-map-route" id="orderMapRoute" aria-hidden="true"></svg>
+          <div class="order-map-markers" id="orderMapMarkers" aria-hidden="true"></div>
+          <span class="order-map-attribution">© OpenStreetMap contributors · Routing by OSRM</span>
+        </div>
+      </section>
+    </dialog>
+    <dialog class="time-picker-dialog" id="orderTimeDialog" aria-labelledby="timePickerTitle">
+      <div class="time-picker-card">
+        <div class="time-picker-heading"><div><span id="timePickerEyebrow">ORDER SCHEDULE</span><h2 id="timePickerTitle">Choose a time</h2></div><button class="time-picker-close" id="orderTimeCloseBtn" type="button" aria-label="Close time picker">×</button></div>
+        <div class="time-picker-readout" aria-live="polite"><button id="timePickerHour" type="button" aria-label="Choose hour">08</button><span>:</span><button id="timePickerMinute" type="button" aria-label="Choose minutes">00</button><span class="time-picker-period-options" role="group" aria-label="Choose AM or PM"><button class="time-picker-period" id="timePickerAmBtn" type="button" aria-pressed="true">AM</button><button class="time-picker-period" id="timePickerPmBtn" type="button" aria-pressed="false">PM</button></span></div>
+        <p class="time-picker-instruction" id="timePickerInstruction">Choose a time during delivery availability.</p>
+        <div class="time-picker-face" id="timePickerFace" role="group" aria-label="12-hour time picker"></div>
+        <div class="time-picker-actions"><button class="btn btn-ghost" id="orderTimeCancelBtn" type="button">Cancel</button><button class="btn btn-primary" id="orderTimeNextBtn" type="button">Next</button><button class="btn btn-primary" id="orderTimeSetBtn" type="button" hidden>Set time</button></div>
+      </div>
+    </dialog>
+
+    <footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="fbrand">
+          <img class="footer-logo" src="/TubiPure/images/tubipure-logo.png" alt="">
+          TubiPure
+        </div>
+        <p>Alkaline &amp; purified drinking water, delivered fresh to your door in Tagum City.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Visayan Village, Purok Pioneer, Tagum, 8100 Davao del Norte</p>
+        <p>0946 947 5468<br>tubipurewater@gmail.com</p>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <p>Station: <span id="footerStationHours">6:00 AM – 6:00 PM</span><br>Delivery: <span id="footerDeliveryHours">7:00 AM – 4:00 PM</span></p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 TubiPure Water Refilling Station.</span>
+      <span>In-Order TubiPure Delivery System</span>
+    </div>
+  </div>
+</footer>
+    <div class="overlay" id="customerModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="custModalTitle">Add new customer</h3><button class="modal-close" data-close>&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="custId">
+      <div class="form-row" id="fld-custName">
+        <label>Full name</label>
+        <input type="text" id="custName" maxlength="255" placeholder="e.g. Maria Santos">
+        <div class="err">Please enter the customer's name.</div>
+      </div>
+      <div class="form-row" id="fld-custAddress">
+        <label>Address</label>
+        <input type="text" id="custAddress" maxlength="255" placeholder="Purok / Street, Barangay">
+        <div class="err">Please enter an address.</div>
+      </div>
+      <div class="form-row" id="fld-custContact">
+        <label>Contact number</label>
+        <input type="tel" id="custContact" maxlength="11" placeholder="09XXXXXXXXX">
+        <div class="err">Enter a valid 11-digit contact number.</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-primary" id="saveCustomerBtn">Save customer</button>
+    </div>
+  </div>
+</div>
+    <div class="overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="detailName">Customer</h3><button class="modal-close" data-close>&times;</button></div>
+    <div class="modal-body">
+      <p class="helper-text" id="detailMeta" style="margin-bottom:14px;"></p>
+      <div class="section-title"><h2 style="font-size:14px;">Order history</h2></div>
+      <div id="detailHistory"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close>Close</button>
+    </div>
+  </div>
+</div>
+    <div class="overlay" id="deliveryModal">
+  <div class="modal delivery-modal" id="deliveryModalPanel">
+    <div class="delivery-modal-head">
+      <span class="walk-in-order-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M8 20h32v22H8zM5 18l4-10h30l4 10M5 18c0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M18 42V29h12v13" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg></span>
+      <div class="delivery-modal-title-copy"><h3 id="delModalTitle">Record Walk-in Order</h3><p id="delModalDescription">Record gallons purchased directly at the station.<br>This will automatically update the Overview totals.</p></div>
+      <button class="delivery-modal-close" type="button" data-close aria-label="Close dialog">×</button>
+    </div>
+    <div class="modal-body delivery-modal-body">
+      <input type="hidden" id="delId">
+      <div class="delivery-standard-fields" id="standardDeliveryFields">
+        <div class="form-row" id="fld-delCustomer"><label>Customer</label><select id="delCustomer"></select><div class="err">Please select a customer.</div></div>
+        <div class="form-grid2">
+          <div class="form-row" id="fld-delDate"><label>Delivery date</label><input type="date" id="delDate"><div class="err">Please choose a date.</div></div>
+          <div class="form-row" id="fld-delTime"><label>Time slot</label><select id="delTime"><option value="8:00–10:00 AM">8:00–10:00 AM</option><option value="10:00 AM–12:00 PM">10:00 AM–12:00 PM</option><option value="1:00–3:00 PM">1:00–3:00 PM</option><option value="3:00–5:00 PM">3:00–5:00 PM</option></select></div>
+        </div>
+        <div id="standardGallonsMount"></div>
+        <div id="standardWaterTypeMount"></div>
+        <div class="form-row" id="fld-delStatus"><label>Status</label><select id="delStatus"><option>Pending</option><option>Confirmed</option><option>Out for Delivery</option><option>Delivered</option></select></div>
+      </div>
+      <div class="walk-in-order-layout" id="walkInOrderLayout" hidden>
+        <div class="walk-in-order-fields">
+          <div id="walkInWaterTypeMount"></div>
+          <div id="walkInGallonsMount"></div>
+          <p class="walk-in-order-note" id="walkInOrderNote"><span class="walk-in-info-icon" aria-hidden="true">i</span><span>Recorded gallons will be added to today’s sales and gallon totals in Overview.</span></p>
+        </div>
+        <aside class="walk-in-order-summary" aria-labelledby="walkInSummaryTitle">
+          <h4 id="walkInSummaryTitle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l5 5v13H6zM14 3v6h5M9 13h7M9 17h7"/></svg>Order Summary</h4>
+          <dl>
+            <div><dt>Water Type</dt><dd id="walkInSummaryWaterType">Alkaline</dd></div>
+            <div><dt id="walkInSummaryGallonsLabel">Gallons</dt><dd id="walkInSummaryGallons">—</dd></div>
+            <div><dt id="walkInSummaryPriceLabel">Price per Gallon</dt><dd id="walkInSummaryPrice">₱0.00</dd></div>
+          </dl>
+          <div class="walk-in-summary-total"><strong>Total</strong><b id="walkInSummaryTotal">₱0.00</b></div>
+        </aside>
+      </div>
+      <div class="form-row" id="fld-delGallons"><label id="delGallonsLabel" for="delGallons">Quantity (gallons)</label><input class="delivery-quantity-input" type="number" id="delGallons" min="1" max="1000" step="1" placeholder="Enter quantity"><div class="err">Enter a valid quantity.</div></div>
+      <div id="bothQuantityFields" hidden>
+        <div class="form-row" id="fld-delAlkalineQuantity"><label for="delAlkalineQuantity">Alkaline quantity (gallons)</label><input class="delivery-quantity-input" type="number" id="delAlkalineQuantity" min="1" max="1000" step="1" placeholder="Enter alkaline quantity"><div class="err">Enter a valid quantity.</div></div>
+        <div class="form-row" id="fld-delPurifiedQuantity"><label for="delPurifiedQuantity">Purified quantity (gallons)</label><input class="delivery-quantity-input" type="number" id="delPurifiedQuantity" min="1" max="1000" step="1" placeholder="Enter purified quantity"><div class="err">Enter a valid quantity. Combined quantity cannot exceed 1,000 gallons.</div></div>
+      </div>
+      <div class="form-row" id="fld-delWaterType"><label for="delWaterType">Water Type</label><div class="walk-in-water-select"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8S5.1 11 5.1 15.4a6.9 6.9 0 1 0 13.8 0C18.9 11 12 2.8 12 2.8Z"/></svg></span><select id="delWaterType"><option value="alkaline">Alkaline</option><option value="purified">Purified</option><option value="both">Both</option></select><svg class="walk-in-water-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></div></div>
+    </div>
+    <div class="modal-foot delivery-modal-foot">
+      <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+      <button class="btn btn-primary" id="saveDeliveryBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"/></svg>Record Walk-in Order</button>
+    </div>
+  </div>
+</div>
+    <dialog class="admin-action-dialog" id="adminActionDialog" aria-labelledby="adminActionTitle" aria-describedby="adminActionDescription">
+        <div class="admin-action-dialog-card">
+            <button class="admin-action-dialog-close" id="closeAdminActionDialog" type="button" aria-label="Close confirmation">&times;</button>
+            <span class="admin-action-dialog-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2.8 19a1.4 1.4 0 0 0 1.2 2.1h16a1.4 1.4 0 0 0 1.2-2.1L12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v4.5m0 3h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <p class="admin-action-dialog-eyebrow" id="adminActionEyebrow">Admin action</p>
+            <h2 id="adminActionTitle">Confirm this action?</h2>
+            <p class="admin-action-dialog-description" id="adminActionDescription"></p>
+            <p class="admin-action-dialog-record" id="adminActionRecordName"></p>
+            <div class="admin-action-dialog-reason" id="adminActionReasonField" hidden>
+                <label for="adminActionReason">Reason for rejection</label>
+                <textarea id="adminActionReason" rows="3" maxlength="200" placeholder="Tell the customer why this order is being rejected."></textarea>
+                <small>This reason will be saved with the order.</small>
+            </div>
+            <p class="admin-action-dialog-feedback" id="adminActionFeedback" role="status" aria-live="polite"></p>
+            <div class="admin-action-dialog-buttons">
+                <button class="btn btn-ghost" id="keepAdminActionButton" type="button" autofocus>Go back</button>
+                <button class="btn" id="adminActionConfirmButton" type="button">Confirm</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog class="orders-report-dialog" id="ordersReportDialog" aria-labelledby="ordersReportTitle">
+        <form class="orders-report-card" id="ordersReportForm">
+            <button class="orders-report-close" id="closeOrdersReportDialog" type="button" aria-label="Close report builder">&times;</button>
+            <p class="orders-report-eyebrow">Orders workspace</p>
+            <h2 id="ordersReportTitle">Create Report</h2>
+            <p class="orders-report-description">Customize the information you want to include in your report.</p>
+
+            <section class="orders-report-section" aria-labelledby="ordersReportDetailsHeading">
+                <div class="orders-report-section-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg><h3 id="ordersReportDetailsHeading">Report Details</h3><span></span></div>
+                <div class="orders-report-fields orders-report-details-grid">
+                    <label class="orders-report-field"><span>Report type</span><svg class="orders-report-control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><select id="ordersReportType"><option value="orders" selected>Orders report</option><option value="sales">Sales report</option><option value="products">Product performance report</option><option value="delivery">Delivery report</option><option value="cancellations">Cancellations report</option></select></label>
+                    <label class="orders-report-field"><span>Date range</span><svg class="orders-report-control-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></svg><select id="ordersReportRange"><option value="today" selected>Today</option><option value="week">This week</option><option value="month">This month</option><option value="custom">Custom range</option></select></label>
+                    <div class="orders-report-custom-range" id="ordersReportCustomRange" hidden>
+                        <label class="orders-report-field"><span>From</span><input id="ordersReportDateFrom" type="date"></label>
+                        <label class="orders-report-field"><span>To</span><input id="ordersReportDateTo" type="date"></label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="orders-report-section" aria-labelledby="ordersReportFiltersHeading">
+                <div class="orders-report-section-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6.2 7.1v5.1l-3.6 1.8v-6.9L4 5Z"/></svg><h3 id="ordersReportFiltersHeading">Filters</h3><span></span></div>
+                <div class="orders-report-fields orders-report-filters-grid">
+                    <label class="orders-report-field"><span>Order status</span><svg class="orders-report-control-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h2M14 14l1.5 1.5L18 13"/></svg><select id="ordersReportStatus"><option value="">All statuses</option><option value="Pending">Pending</option><option value="Confirmed">Approved</option><option value="Out for Delivery">Out for delivery</option><option value="Delivered">Delivered</option><option value="Cancelled">Cancelled</option></select></label>
+                    <label class="orders-report-field"><span>Water type</span><svg class="orders-report-control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s-6.5 7.7-6.5 12a6.5 6.5 0 0 0 13 0C18.5 10.7 12 3 12 3Z"/><path d="M9 16a3 3 0 0 0 3 2"/></svg><select id="ordersReportWaterType"><option value="">All water types</option><option value="Purified">Purified</option><option value="Alkaline">Alkaline</option></select></label>
+                    <label class="orders-report-field"><span>Fulfillment method</span><svg class="orders-report-control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7.5 9-4.5 9 4.5v9L12 21l-9-4.5v-9Z"/><path d="M12 21v-9M3.3 7.7 12 12l8.7-4.3M8 5l9 4.5"/></svg><select id="ordersReportFulfillment"><option value="">All methods</option><option value="delivery">Delivery</option><option value="pickup">Pickup</option></select></label>
+                </div>
+            </section>
+
+            <fieldset class="orders-report-section orders-report-output-section">
+                <legend class="sr-only">Report output format</legend>
+                <div class="orders-report-section-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><h3>Report Output</h3><span></span></div>
+                <div class="orders-report-format-grid">
+                    <label class="orders-report-format-card is-selected">
+                        <input type="radio" name="ordersReportFormat" value="preview" checked>
+                        <svg class="orders-report-format-icon orders-report-preview-icon" viewBox="0 0 40 40" aria-hidden="true"><path d="M3 20s6.1-10 17-10 17 10 17 10-6.1 10-17 10S3 20 3 20Z"/><circle cx="20" cy="20" r="6"/></svg>
+                        <span class="orders-report-format-copy"><strong>Preview</strong><small>View the report<br>before exporting.</small></span>
+                        <span class="orders-report-radio-mark" aria-hidden="true"></span>
+                    </label>
+                    <label class="orders-report-format-card">
+                        <input type="radio" name="ordersReportFormat" value="pdf">
+                        <span class="orders-report-file-icon orders-report-pdf-icon" aria-hidden="true">PDF</span>
+                        <span class="orders-report-format-copy"><strong>PDF</strong><small>Download the report<br>as a PDF file.</small></span>
+                        <span class="orders-report-radio-mark" aria-hidden="true"></span>
+                    </label>
+                    <label class="orders-report-format-card">
+                        <input type="radio" name="ordersReportFormat" value="csv">
+                        <span class="orders-report-file-icon orders-report-csv-icon" aria-hidden="true"><svg viewBox="0 0 32 36"><path d="M6 2h13l8 8v23H6z"/><path d="M19 2v9h8"/><path d="M10 17h13M10 22h13M10 27h13"/></svg></span>
+                        <span class="orders-report-format-copy"><strong>CSV</strong><small>Export the report<br>data as a CSV file.</small></span>
+                        <span class="orders-report-radio-mark" aria-hidden="true"></span>
+                    </label>
+                </div>
+            </fieldset>
+            <p class="orders-report-feedback" id="ordersReportFeedback" role="status" aria-live="polite"></p>
+            <div class="orders-report-actions">
+                <button class="orders-report-cancel" id="cancelOrdersReport" type="button">Cancel</button>
+                <button class="orders-report-generate" type="submit">Generate Report</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog class="orders-report-dialog orders-report-preview-dialog" id="ordersReportPreviewDialog" aria-labelledby="ordersReportPreviewTitle">
+        <section class="orders-report-preview-card">
+            <button class="orders-report-close" id="closeOrdersReportPreview" type="button" aria-label="Close report preview">&times;</button>
+            <p class="orders-report-eyebrow">Generated report</p>
+            <h2 id="ordersReportPreviewTitle">Report preview</h2>
+            <p class="orders-report-description" id="ordersReportPreviewDescription"></p>
+            <div class="orders-report-summary" id="ordersReportPreviewSummary"></div>
+            <div class="orders-report-table-wrap" id="ordersReportPreviewTable"></div>
+            <div class="orders-report-actions">
+                <button class="orders-report-cancel" id="closeOrdersReportPreviewDone" type="button">Done</button>
+                <button class="orders-report-cancel" id="ordersReportPreviewCsv" type="button">Export CSV</button>
+                <button class="orders-report-cancel" id="ordersReportPreviewPrint" type="button">Print</button>
+                <button class="orders-report-generate" id="ordersReportPreviewPdf" type="button">Download PDF</button>
+            </div>
+        </section>
+    </dialog>
+    <div class="toast-stack" id="toastStack"></div>
+</body>
+</html>
+
