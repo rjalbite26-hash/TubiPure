@@ -34,9 +34,25 @@
         </aside>
       </div>
       <div class="form-row" id="fld-delGallons"><label id="delGallonsLabel" for="delGallons">Quantity (gallons)</label><input class="delivery-quantity-input" type="number" id="delGallons" min="1" max="1000" step="1" placeholder="Enter quantity"><div class="err">Enter a valid quantity.</div></div>
-      <div id="bothQuantityFields" hidden>
-        <div class="form-row" id="fld-delAlkalineQuantity"><label for="delAlkalineQuantity">Alkaline quantity (gallons)</label><input class="delivery-quantity-input" type="number" id="delAlkalineQuantity" min="1" max="1000" step="1" placeholder="Enter alkaline quantity"><div class="err">Enter a valid quantity.</div></div>
-        <div class="form-row" id="fld-delPurifiedQuantity"><label for="delPurifiedQuantity">Purified quantity (gallons)</label><input class="delivery-quantity-input" type="number" id="delPurifiedQuantity" min="1" max="1000" step="1" placeholder="Enter purified quantity"><div class="err">Enter a valid quantity. Combined quantity cannot exceed 1,000 gallons.</div></div>
+      <div id="walkInQuantityFields" hidden>
+        <div class="form-row" id="fld-delAlkalineQuantity">
+          <label for="delAlkalineQuantity">Alkaline gallons</label>
+          <div class="walk-in-gallons-control">
+            <button type="button" data-order-quantity-target="delAlkalineQuantity" data-quantity-step="-1" aria-label="Decrease alkaline gallons">−</button>
+            <input class="delivery-quantity-input" type="number" id="delAlkalineQuantity" min="1" max="1000" step="1" inputmode="numeric" aria-label="Alkaline gallons">
+            <button type="button" data-order-quantity-target="delAlkalineQuantity" data-quantity-step="1" aria-label="Increase alkaline gallons">+</button>
+          </div>
+          <div class="err">Enter a valid quantity.</div>
+        </div>
+        <div class="form-row" id="fld-delPurifiedQuantity">
+          <label for="delPurifiedQuantity">Purified gallons</label>
+          <div class="walk-in-gallons-control">
+            <button type="button" data-order-quantity-target="delPurifiedQuantity" data-quantity-step="-1" aria-label="Decrease purified gallons">−</button>
+            <input class="delivery-quantity-input" type="number" id="delPurifiedQuantity" min="1" max="1000" step="1" inputmode="numeric" aria-label="Purified gallons">
+            <button type="button" data-order-quantity-target="delPurifiedQuantity" data-quantity-step="1" aria-label="Increase purified gallons">+</button>
+          </div>
+          <div class="err">Enter a valid quantity. Combined quantity cannot exceed 1,000 gallons.</div>
+        </div>
       </div>
       <div class="form-row" id="fld-delWaterType"><label for="delWaterType">Water Type</label><div class="walk-in-water-select"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8S5.1 11 5.1 15.4a6.9 6.9 0 1 0 13.8 0C18.9 11 12 2.8 12 2.8Z"/></svg></span><select id="delWaterType"><option value="alkaline">Alkaline</option><option value="purified">Purified</option><option value="both">Both</option></select><svg class="walk-in-water-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></div></div>
     </div>

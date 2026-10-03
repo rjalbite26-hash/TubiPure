@@ -2934,7 +2934,7 @@ function openDeliveryForm(id, {walkIn = false} = {}){
   document.getElementById('standardDeliveryFields').hidden = isWalkInOrder;
   document.getElementById('deliveryModalPanel').classList.toggle('is-walk-in',isWalkInOrder);
   document.getElementById(isWalkInOrder?'walkInWaterTypeMount':'standardWaterTypeMount').append(document.getElementById('fld-delWaterType'));
-  document.getElementById(isWalkInOrder?'walkInGallonsMount':'standardGallonsMount').append(document.getElementById('fld-delGallons'),document.getElementById('bothQuantityFields'));
+  document.getElementById(isWalkInOrder?'walkInGallonsMount':'standardGallonsMount').append(document.getElementById('fld-delGallons'),document.getElementById('walkInQuantityFields'));
   document.getElementById('fld-delWaterType').hidden = !isWalkInOrder;
   document.getElementById('fld-delStatus').hidden = isWalkInOrder;
   document.getElementById('saveDeliveryBtn').innerHTML = isWalkInOrder
@@ -2981,7 +2981,7 @@ function updateWalkInOrderSummary(){
   const bothPriceLabel=Number.isFinite(alkalinePrice)&&Number.isFinite(purifiedPrice)?`₱${alkalinePrice.toFixed(2)} + ₱${purifiedPrice.toFixed(2)}`:'Unavailable';
   const totalGallons=isBoth?alkalineQuantity+purifiedQuantity:quantity;
   document.getElementById('fld-delGallons').hidden=isBoth;
-  document.getElementById('bothQuantityFields').hidden=!isBoth;
+  document.getElementById('walkInQuantityFields').hidden=!isBoth;
   document.getElementById('delGallons').max='1000';
   document.getElementById('walkInSummaryWaterType').textContent=isBoth?'Alkaline + Purified':waterType==='purified'?'Purified':'Alkaline';
   document.getElementById('walkInSummaryGallonsLabel').textContent=isBoth?'Alkaline + purified':'Gallons';
@@ -2992,6 +2992,7 @@ function updateWalkInOrderSummary(){
   document.getElementById('walkInSummaryPrice').textContent=isBoth?bothPriceLabel:Number.isFinite(price)?`₱${price.toFixed(2)}`:'Unavailable';
   const orderTotal=isBoth?alkalineQuantity*alkalinePrice+purifiedQuantity*purifiedPrice:price*quantity;
   document.getElementById('walkInSummaryTotal').textContent=Number.isFinite(orderTotal)?`₱${orderTotal.toFixed(2)}`:'Unavailable';
+  updateOrderQuantityStepperButtons();
 }
 document.getElementById('delWaterType').addEventListener('change',updateWalkInOrderSummary);
 document.getElementById('delGallons').addEventListener('input',updateWalkInOrderSummary);

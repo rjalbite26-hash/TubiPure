@@ -1,0 +1,201 @@
+.walk-in-order-layout[hidden],
+#walkInQuantityFields[hidden] {
+  display:none;
+}
+
+.walk-in-gallons-control {
+  display:grid;
+  grid-template-columns:56px minmax(0,1fr) 56px;
+  align-items:center;
+  gap:10px;
+  min-height:72px;
+  padding:8px 10px;
+  border:1px solid var(--theme-border);
+  border-radius:17px;
+  background:var(--theme-surface);
+  transition:border-color .16s ease,box-shadow .16s ease;
+}
+
+.walk-in-gallons-control:focus-within {
+  border-color:var(--theme-accent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 18%,transparent);
+}
+
+.walk-in-gallons-control button {
+  display:grid;
+  place-items:center;
+  width:56px;
+  height:56px;
+  padding:0;
+  border:0;
+  border-radius:13px;
+  background:var(--theme-surface-soft);
+  color:var(--theme-text);
+  font:700 36px/1 var(--font-body);
+  cursor:pointer;
+  transition:background-color .15s ease,transform .15s ease,opacity .15s ease;
+}
+
+.walk-in-gallons-control button[data-quantity-step="1"] {
+  background:var(--theme-accent);
+  color:#fff;
+}
+
+.walk-in-gallons-control button:not(:disabled):hover {
+  transform:translateY(-1px);
+  background:color-mix(in srgb,var(--theme-accent) 18%,var(--theme-surface-soft));
+}
+
+.walk-in-gallons-control button[data-quantity-step="1"]:not(:disabled):hover {
+  background:var(--theme-accent-hover);
+}
+
+.walk-in-gallons-control button:disabled {
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.walk-in-gallons-control input.delivery-quantity-input {
+  grid-column:2;
+  min-width:0;
+  min-height:0;
+  height:56px;
+  padding:0!important;
+  border:0!important;
+  border-radius:8px!important;
+  outline:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--theme-text)!important;
+  font-size:30px!important;
+  font-variant-numeric:tabular-nums;
+  font-weight:800!important;
+  text-align:center;
+  appearance:textfield;
+}
+
+.walk-in-gallons-control input.delivery-quantity-input::-webkit-inner-spin-button,
+.walk-in-gallons-control input.delivery-quantity-input::-webkit-outer-spin-button {
+  margin:0;
+  appearance:none;
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal {
+  border-color:var(--theme-border);
+  background:var(--theme-surface-raised);
+  color:var(--theme-text);
+  box-shadow:0 30px 90px rgba(18,48,71,.24);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-head {
+  border-color:var(--theme-border);
+  background:var(--theme-surface-raised);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-title-copy h3,
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-summary h4,
+html:not([data-theme="dark"]) #deliveryModal .walk-in-summary-total strong,
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-fields .form-row>label {
+  color:var(--theme-text);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-title-copy p,
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-note {
+  color:var(--theme-muted);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-close {
+  border-color:var(--theme-border);
+  background:var(--theme-surface-soft);
+  color:var(--theme-text);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-layout {
+  border-color:var(--theme-border);
+  background:var(--theme-surface-soft);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-note {
+  border-color:var(--theme-border);
+  background:var(--theme-surface);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-water-select {
+  border-color:var(--theme-border);
+  background:var(--theme-surface);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-water-select select {
+  color:var(--theme-text)!important;
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-water-select select option {
+  background:var(--theme-surface);
+  color:var(--theme-text);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-gallons-control {
+  border-color:var(--theme-border);
+  background:var(--theme-surface);
+  box-shadow:inset 0 1px 3px rgba(18,48,71,.06);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-summary {
+  border-color:var(--theme-border);
+  background:var(--theme-surface);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-summary h4,
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-summary dl {
+  border-color:var(--theme-border);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-summary dt {
+  color:var(--theme-muted);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-order-summary dd {
+  color:var(--theme-text);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-summary-total {
+  background:var(--theme-surface-soft);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .walk-in-summary-total b {
+  color:var(--theme-accent);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-foot {
+  border-color:var(--theme-border);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-foot .btn-ghost {
+  border-color:var(--theme-border);
+  background:var(--theme-surface);
+  color:var(--theme-text);
+}
+
+html:not([data-theme="dark"]) #deliveryModal .delivery-modal-foot .btn-ghost:hover {
+  background:var(--theme-surface-soft);
+}
+
+@media(max-width:560px) {
+  .walk-in-gallons-control {
+    grid-template-columns:54px minmax(0,1fr) 54px;
+    min-height:76px;
+    padding:8px;
+  }
+
+  .walk-in-gallons-control button {
+    width:50px;
+    height:50px;
+    border-radius:12px;
+    font-size:29px;
+  }
+
+  .walk-in-gallons-control input.delivery-quantity-input {
+    height:50px;
+    font-size:29px!important;
+  }
+}
