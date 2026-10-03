@@ -83,12 +83,18 @@ async function api(path, options={}){
     document.querySelector('meta[name="csrf-token"]').content = payload.csrfToken;
   }
   if(!response.ok){
-    if(response.status===401 && path!=='/me'){
-      currentUser=null; customers=[]; deliveries=[];
-      updateAuthNavigation();
-      setAuthMode('login');
-      go('myaccount');
-      document.getElementById('authFeedback').textContent='Your session ended. Please sign in again.';
+    if(response.status===401){
+      const sessionCheck=path==='/me'?response:await fetch('/api/me',{
+        credentials:'same-origin',
+        headers:{'Accept':'application/json'}
+      }).catch(()=>null);
+      if(sessionCheck?.status===401){
+        currentUser=null; customers=[]; deliveries=[];
+        updateAuthNavigation();
+        setAuthMode('login');
+        go('myaccount');
+        document.getElementById('authFeedback').textContent='Your session ended. Please sign in again.';
+      }
     }
     const messages = Object.values(payload.errors||{}).flat();
     const error = new Error(response.status===419 ? 'Your session expired. Refresh the page and sign in again.' : (messages[0] || payload.message || 'Something went wrong. Please try again.'));
@@ -4468,11 +4474,12 @@ document.addEventListener('keydown', (e)=>{
 async function refreshSession(){
   const previousUserId=currentUser?.id;
   const data = await api('/me');
+  currentUser = data.user;
+  if(String(previousUserId||'')!==String(currentUser.id)) liveNotificationUserId=String(currentUser.id);
+  updateAuthNavigation();
   const pricingResponse=await api('/pricing').catch(()=>null);
   pricingSettings=pricingResponse?.data||null;
   updateDeliveryHoursCard();
-  currentUser = data.user;
-  if(String(previousUserId||'')!==String(currentUser.id)) liveNotificationUserId=String(currentUser.id);
   if(currentUser.customer){
     currentUser.customer.addresses = currentUser.customer.addresses || [];
     const savedAddresses=await api('/my/addresses');
@@ -4534,6 +4541,14 @@ refreshSession().then(()=>{
   if(currentUser.role==='staff'&&activePage!=='page-users') refreshNewUserCount();
   renderNotifications();
 }).catch(async()=>{
+  if(currentUser){
+    updateAuthNavigation();
+    const route = isPasswordResetRoute ? 'myaccount' : (validRoutes.includes(startRoute) ? startRoute : 'home');
+    const intent = new URLSearchParams(location.search).get('intent');
+    const requestedRoute=intent==='order' && currentUser.role==='customer'?'order':route;
+    go(currentUser.role==='staff' ? route : (['dashboard','customers','users','scheduler','order-history','kmr','datetime'].includes(route) ? 'myaccount' : requestedRoute));
+    return;
+  }
   currentUser=null;
   updateAuthNavigation();
   await loadPricingSettings().catch(()=>null);
