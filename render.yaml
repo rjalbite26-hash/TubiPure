@@ -18,6 +18,10 @@ services:
         generateValue: true
       - key: LOG_CHANNEL
         value: stderr
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
