@@ -13,10 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        if (app()->environment('production')) {
-            $middleware->trustProxies(at: '*');
-        }
-
+        $middleware->trustProxies(at: '*');
         $middleware->alias(['staff' => EnsureUserIsStaff::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
