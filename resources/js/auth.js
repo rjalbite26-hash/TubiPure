@@ -154,7 +154,9 @@ import './theme.js';
             const safeIntent = ['order', 'my-orders'].includes(requestedIntent)
                 ? `?intent=${requestedIntent}`
                 : '';
-            const destination = requestedIntent === 'order' ? '#order' : '#home';
+            const destination = requestedIntent === 'order'
+                ? '#order'
+                : (requestedIntent === 'my-orders' ? '#myaccount' : '#home');
             window.location.assign(`/${safeIntent}${destination}`);
         } catch {
             showFeedback('We could not reach the server. Check your connection and try again.');

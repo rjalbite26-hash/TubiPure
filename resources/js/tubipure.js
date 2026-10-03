@@ -740,6 +740,10 @@ function closeAdminSidebarProfileMenu(){
   document.getElementById('adminSidebarSettingsBtn').setAttribute('aria-expanded','false');
 }
 function go(route){
+  if(route==='myaccount'&&!currentUser){
+    window.location.assign('/login?intent=my-orders');
+    return;
+  }
   if(route==='order' && currentUser?.role==='staff'){
     route='dashboard';
     toast('Customer account required','Orders can only be placed from a customer account.');
