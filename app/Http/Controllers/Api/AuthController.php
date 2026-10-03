@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -55,13 +56,25 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
+        $throttleKey = 'login:'.Str::transliterate(Str::lower($credentials['email']).'|'.$request->ip());
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $retryAfter = RateLimiter::availableIn($throttleKey);
+
+            return response()->json([
+                'message' => "Too many login attempts. Please try again in {$retryAfter} seconds.",
+            ], 429)->header('Retry-After', (string) $retryAfter);
+        }
 
         if (! Auth::attempt($credentials)) {
+            RateLimiter::hit($throttleKey, 60);
+
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
+        RateLimiter::clear($throttleKey);
         $request->session()->regenerate();
         $user = $request->user()->load(['customer.addresses']);
 

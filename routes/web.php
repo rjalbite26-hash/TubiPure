@@ -31,7 +31,7 @@ Route::prefix('api')->name('api.')->group(function (): void {
     Route::get('/public/stats', [DashboardController::class, 'publicStats']);
     Route::get('/pricing', [PricingSettingsController::class, 'show']);
     Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
-    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+    Route::post('/login', [AuthController::class, 'login']);
     Route::post('/password/forgot', [AuthController::class, 'sendPasswordResetLink'])->middleware('throttle:password-reset');
     Route::post('/password/reset', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
     Route::post('/contact-messages', [ContactMessageController::class, 'store'])->middleware('throttle:5,1');

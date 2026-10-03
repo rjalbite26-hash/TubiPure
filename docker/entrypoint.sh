@@ -9,6 +9,7 @@ if [ -n "${RENDER_EXTERNAL_URL:-}" ]; then
   export APP_DEBUG=false
   export SESSION_DRIVER=file
   export CACHE_STORE=file
+  unset SESSION_DOMAIN
 
   if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
     export DB_DATABASE=/var/www/html/storage/app/database.sqlite
