@@ -90,32 +90,29 @@ class PlaceCustomerOrderRequest extends FormRequest
                 return;
             }
 
-            $pricingSettings = PricingSetting::query()->find(1);
+            $pricingSettings = PricingSetting::current();
+            $timeSlot = $this->input('time_slot');
+            $isPickup = $this->input('fulfillment_method') === 'pickup';
+            $day = (new \DateTimeImmutable($this->input('date')))->format('l');
+            $schedule = $isPickup ? $pricingSettings->station_schedule : $pricingSettings->delivery_schedule;
+            $hours = $schedule[$day] ?? null;
 
-            if ($pricingSettings) {
-                $timeSlot = $this->input('time_slot');
-                $isPickup = $this->input('fulfillment_method') === 'pickup';
-                $day = (new \DateTimeImmutable($this->input('date')))->format('l');
-                $schedule = $isPickup ? $pricingSettings->station_schedule : $pricingSettings->delivery_schedule;
-                $hours = $schedule[$day] ?? null;
+            if ($schedule !== null && (! is_array($hours) || ! ($hours['open'] ?? false))) {
+                $validator->errors()->add(
+                    'date',
+                    $isPickup
+                        ? "The station is closed on {$day}. Choose another date."
+                        : "Delivery is not available on {$day}. Choose another date or select pickup.",
+                );
 
-                if ($schedule !== null && (! is_array($hours) || ! ($hours['open'] ?? false))) {
-                    $validator->errors()->add(
-                        'date',
-                        $isPickup
-                            ? "The station is closed on {$day}. Choose another date."
-                            : "Delivery is not available on {$day}. Choose another date or select pickup.",
-                    );
+                return;
+            }
 
-                    return;
-                }
+            $startTime = substr($hours['opens'] ?? ($isPickup ? $pricingSettings->opening_time : $pricingSettings->delivery_start_time), 0, 5);
+            $endTime = substr($hours['closes'] ?? ($isPickup ? $pricingSettings->closing_time : $pricingSettings->delivery_end_time), 0, 5);
 
-                $startTime = substr($hours['opens'] ?? ($isPickup ? $pricingSettings->opening_time : $pricingSettings->delivery_start_time), 0, 5);
-                $endTime = substr($hours['closes'] ?? ($isPickup ? $pricingSettings->closing_time : $pricingSettings->delivery_end_time), 0, 5);
-
-                if ($timeSlot < $startTime || $timeSlot > $endTime) {
-                    $validator->errors()->add('time_slot', "Choose a time between {$startTime} and {$endTime} on {$day}.");
-                }
+            if ($timeSlot < $startTime || $timeSlot > $endTime) {
+                $validator->errors()->add('time_slot', "Choose a time between {$startTime} and {$endTime} on {$day}.");
             }
         }];
     }

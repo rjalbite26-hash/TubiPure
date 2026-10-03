@@ -39,7 +39,7 @@ class DeliveryController extends Controller
                 ? (int) $data['purified_quantity']
                 : ($selectedWaterType === 'purified' ? (int) $data['quantity'] : 0);
             $quantity = $alkalineQuantity + $purifiedQuantity;
-            $pricingSettings = PricingSetting::query()->findOrFail(1);
+            $pricingSettings = PricingSetting::current();
             $alkalinePrice = (float) $pricingSettings->alkaline_price_per_gallon;
             $purifiedPrice = (float) $pricingSettings->purified_price_per_gallon;
             $gallons = $alkalineQuantity + $purifiedQuantity;
@@ -128,7 +128,7 @@ class DeliveryController extends Controller
         abort_unless($customer, 403, 'A customer profile is required to place an order.');
 
         $data = $request->validated();
-        $pricingSettings = PricingSetting::query()->findOrFail(1);
+        $pricingSettings = PricingSetting::current();
         $deliveryZone = null;
         $deliveryAddressText = null;
         $customerAddressId = null;

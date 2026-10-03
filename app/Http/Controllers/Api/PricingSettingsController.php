@@ -24,6 +24,6 @@ class PricingSettingsController extends Controller
 
     private function currentSettings(): PricingSetting
     {
-        return PricingSetting::query()->findOrFail(1);
+        return PricingSetting::current();
     }
 }
