@@ -1,0 +1,330 @@
+<div>
+    <!-- When there is no desire, all things are at peace. - Laozi -->
+</div>
+
+
+
+<div>
+    <!-- People find pleasure in different ways. I find it in keeping my mind clear. - Marcus Aurelius -->
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="csrf-token" content="thq5JZYFTtAmvkNjw5mvhwUy4XUgTAhFvZ2P6KSj">
+    <meta name="app-timezone" content="Asia/Manila">
+    <title>Reset your password — TubiPure</title>
+    <link rel="icon" type="image/png" href="https://rjalbite26-hash.github.io/TubiPure/images/tubipure-logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+    <script>
+        (() => {
+            try {
+                const theme = localStorage.getItem('tubipure-theme');
+                document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light';
+            } catch {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+    <link rel="preload" as="style" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/auth-TjqhpfeC.css" /><link rel="preload" as="style" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/theme-JJD28Tgx.css" /><link rel="modulepreload" as="script" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/auth-DGB4se-O.js" /><link rel="modulepreload" as="script" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/theme-WBixagpZ.js" /><link rel="stylesheet" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/auth-TjqhpfeC.css" /><link rel="stylesheet" href="https://rjalbite26-hash.github.io/TubiPure/build/assets/theme-JJD28Tgx.css" /><script type="module" src="https://rjalbite26-hash.github.io/TubiPure/build/assets/auth-DGB4se-O.js"></script><script id="browser-logger-active">
+(function() {
+    const ENDPOINT = 'https://rjalbite26-hash.github.io/TubiPure/_boost/browser-logs';
+    const logQueue = [];
+    let flushTimeout = null;
+    const captureTypes = ["error","warning","info","log","debug","table"];
+
+    console.log('🔍 Browser logger active (MCP server detected). Posting to: ' + ENDPOINT);
+
+    // Store original console methods
+    const originalConsole = {
+        log: console.log,
+        debug: console.debug,
+        info: console.info,
+        error: console.error,
+        warn: console.warn,
+        table: console.table
+    };
+
+    // Walk own enumerable keys so JSON.stringify cannot auto-invoke a proxy fake toJSON (e.g. Livewire's `$wire`) and fire a real request.
+    function toSafeValue(value, seen) {
+        if (value === null || typeof value !== 'object') {
+            return value;
+        }
+        if (value instanceof Error) {
+            return { name: value.name, message: value.message, stack: value.stack };
+        }
+        // Date has no own enumerable keys, so the walk below would collapse it to {}.
+        if (value instanceof Date) {
+            return value.toISOString();
+        }
+        if (seen.has(value)) {
+            return '[Circular]';
+        }
+        seen.add(value);
+        if (Array.isArray(value)) {
+            return value.map((item) => toSafeValue(item, seen));
+        }
+        const plain = {};
+        for (const key of Object.keys(value)) {
+            if (key === 'toJSON') continue;
+            try {
+                plain[key] = toSafeValue(value[key], seen);
+            } catch (e) {
+                plain[key] = '[Unreadable]';
+            }
+        }
+        return plain;
+    }
+
+    // Helper to safely stringify values
+    function safeStringify(obj) {
+        return JSON.stringify(toSafeValue(obj, new WeakSet()));
+    }
+
+    // Normalize log type for consistency (e.g., 'warn' to 'warning')
+    function normalizeType(type) {
+        return type === 'warn' ? 'warning' : type;
+    }
+
+    // Determine if a log type should be captured based on configured levels
+    function shouldCapture(type) {
+        return captureTypes.includes(normalizeType(type));
+    }
+
+    // Batch and send logs
+    function flushLogs() {
+        if (logQueue.length === 0) return;
+
+        const batch = logQueue.splice(0, logQueue.length);
+
+        fetch(ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ logs: batch })
+        }).catch(err => {
+            // Silently fail to avoid infinite loops
+            originalConsole.error('Failed to send logs:', err);
+        });
+    }
+
+    // Debounced flush (100ms)
+    function scheduleFlush() {
+        if (flushTimeout) clearTimeout(flushTimeout);
+        flushTimeout = setTimeout(flushLogs, 100);
+    }
+
+    // Intercept console methods
+    ['log', 'debug', 'info', 'error', 'warn', 'table'].forEach(method => {
+        console[method] = function(...args) {
+            // Call original method
+            originalConsole[method].apply(console, args);
+
+            // Capture log data
+            try {
+                if (!shouldCapture(method)) {
+                    return;
+                }
+
+                logQueue.push({
+                    type: method,
+                    timestamp: new Date().toISOString(),
+                    data: args.map(arg => {
+                        try {
+                            return typeof arg === 'object' ? JSON.parse(safeStringify(arg)) : arg;
+                        } catch (e) {
+                            return String(arg);
+                        }
+                    }),
+                    url: window.location.href,
+                    userAgent: navigator.userAgent
+                });
+
+                scheduleFlush();
+            } catch (e) {
+                // Fail silently
+            }
+        };
+    });
+
+    // Global error handlers for uncaught errors
+    const originalOnError = window.onerror;
+    window.onerror = function boostErrorHandler(errorMsg, url, lineNumber, colNumber, error) {
+        try {
+            if (shouldCapture('error')) {
+                logQueue.push({
+                    type: 'uncaught_error',
+                    timestamp: new Date().toISOString(),
+                    data: [{
+                        message: errorMsg,
+                        filename: url,
+                        lineno: lineNumber,
+                        colno: colNumber,
+                        error: error ? {
+                            name: error.name,
+                            message: error.message,
+                            stack: error.stack
+                        } : null
+                    }],
+                    url: window.location.href,
+                    userAgent: navigator.userAgent
+                });
+
+                scheduleFlush();
+            }
+
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Call original handler if it exists
+        if (originalOnError && typeof originalOnError === 'function') {
+            return originalOnError(errorMsg, url, lineNumber, colNumber, error);
+        }
+
+        // Let the error continue to propagate
+        return false;
+    }
+    window.addEventListener('error', (event) => {
+        try {
+            if (!shouldCapture('error')) {
+                return false;
+            }
+
+            logQueue.push({
+                type: 'window_error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: event.message,
+                    filename: event.filename,
+                    lineno: event.lineno,
+                    colno: event.colno,
+                    error: event.error ? {
+                        name: event.error.name,
+                        message: event.error.message,
+                        stack: event.error.stack
+                    } : null
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Let the error continue to propagate
+        return false;
+    });
+    window.addEventListener('unhandledrejection', (event) => {
+        try {
+            if (!shouldCapture('error')) {
+                return false;
+            }
+
+            logQueue.push({
+                type: 'error',
+                timestamp: new Date().toISOString(),
+                data: [{
+                    message: 'Unhandled Promise Rejection',
+                    reason: toSafeValue(event.reason, new WeakSet())
+                }],
+                url: window.location.href,
+                userAgent: navigator.userAgent
+            });
+
+            scheduleFlush();
+        } catch (e) {
+            // Fail silently
+        }
+
+        // Let the rejection continue to propagate
+        return false;
+    });
+
+    // Flush on page unload
+    window.addEventListener('beforeunload', () => {
+        if (logQueue.length > 0) {
+            navigator.sendBeacon(ENDPOINT, JSON.stringify({ logs: logQueue }));
+        }
+    });
+})();
+</script>
+</head>
+<body>
+    <main class="auth-page" data-auth-mode="forgot" data-reset-token="">
+    <aside class="auth-story" aria-label="About TubiPure">
+        <a class="auth-brand" href="https://rjalbite26-hash.github.io/TubiPure/" aria-label="TubiPure home">
+            <img src="https://rjalbite26-hash.github.io/TubiPure/images/tubipure-logo.png" alt="">
+            <span><b>TubiPure</b><small>Clean water, healthier you</small></span>
+        </a>
+        <div class="auth-story-copy">
+            <span class="auth-eyebrow"><i></i> Pure water delivery</span>
+            <h1>Fresh water.<br><em>Made simple.</em></h1>
+            <p>Order your refill, manage deliveries, and keep your household stocked with clean water.</p>
+            <div class="auth-points">
+                <div><span class="auth-check" aria-hidden="true">✓</span><span><b>Easy refills</b><small>Request water in just a few steps.</small></span></div>
+                <div><span class="auth-check" aria-hidden="true">✓</span><span><b>Know what’s next</b><small>Track your delivery from your account.</small></span></div>
+            </div>
+        </div>
+        <div class="auth-watermark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="auth-story-note">TubiPure · Clean water, delivered with care</p>
+    </aside>
+
+<section class="auth-panel">
+        <button class="theme-toggle auth-theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode" aria-pressed="false">
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 018.6 3.6 8.5 8.5 0 1020.4 15.4Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <a class="auth-mobile-brand" href="https://rjalbite26-hash.github.io/TubiPure/">
+            <img src="https://rjalbite26-hash.github.io/TubiPure/images/tubipure-logo.png" alt="">
+            <span>Tubi<b>Pure</b></span>
+        </a>
+        <div class="auth-card">
+            <a class="auth-back" href="https://rjalbite26-hash.github.io/TubiPure/"><span aria-hidden="true">←</span> Back to TubiPure</a>
+            <div class="auth-heading">
+                <span class="auth-kicker">ACCOUNT SUPPORT</span>
+                <h2 id="authTitle">
+                     Reset your password
+                                    </h2>
+                <p id="authDescription">
+                     Enter your email and we’ll send a reset link if an account matches.
+                                    </p>
+            </div>
+
+            <form id="authForm" novalidate>
+                
+                                    <div class="auth-field" data-field="email">
+                        <label for="authEmail">Email address</label>
+                        <input id="authEmail" name="email" type="email" autocomplete="email" maxlength="255" placeholder="you@example.com" value="" required>
+                        <small class="auth-field-error"></small>
+                    </div>
+                
+                
+                
+                <input type="hidden" name="token" value="">
+                <p class="auth-feedback" id="authFeedback" role="status" aria-live="polite"></p>
+                <button class="auth-submit" id="authSubmit" type="submit">
+                    <span class="auth-submit-label">
+                         Send reset link
+                                            </span>
+                    <span class="auth-submit-arrow" aria-hidden="true">→</span>
+                    <span class="auth-spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <div class="auth-switch">
+                                    <a href="https://rjalbite26-hash.github.io/TubiPure/login">Back to log in</a>
+                            </div>
+            <p class="auth-security"><span aria-hidden="true">◈</span> Your account details are protected.</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

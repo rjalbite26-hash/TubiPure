@@ -23,7 +23,8 @@ $renderCode = @'
 require "vendor/autoload.php";
 $app = require "bootstrap/app.php";
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-$request = Illuminate\Http\Request::create("/", "GET", [], [], [], [
+$path = getenv("PAGES_REQUEST_PATH") ?: "/";
+$request = Illuminate\Http\Request::create($path, "GET", [], [], [], [
     "HTTP_HOST" => "rjalbite26-hash.github.io",
     "HTTPS" => "on",
     "SERVER_PORT" => 443,
@@ -36,16 +37,33 @@ if ($response->getStatusCode() !== 200) {
 echo $response->getContent();
 '@
 
-$html = (& php -r $renderCode | Out-String)
-if ($LASTEXITCODE -ne 0) {
-    throw 'Laravel failed to render the homepage.'
+function Export-LaravelPage {
+    param(
+        [string] $Route,
+        [string] $Destination
+    )
+
+    $env:PAGES_REQUEST_PATH = $Route
+    $html = (& php -r $renderCode | Out-String)
+    if ($LASTEXITCODE -ne 0) {
+        throw "Laravel failed to render [$Route]."
+    }
+
+    $html = $html.Replace('http://localhost/', "$BasePath/")
+    $html = $html.Replace('https://localhost/', "$BasePath/")
+    $html = $html.Replace('https://rjalbite26-hash.github.io/', "$SiteUrl/")
+    $html = [regex]::Replace($html, 'https://rjalbite26-hash.github.io(?=["''])', "$SiteUrl/")
+    $html = [regex]::Replace($html, '((?:href|src|action)=["''])/(?!/)', "`$1$BasePath/")
+    $destinationDirectory = Split-Path -Parent $Destination
+    New-Item -Path $destinationDirectory -ItemType Directory -Force | Out-Null
+    [System.IO.File]::WriteAllText($Destination, $html, [System.Text.UTF8Encoding]::new($false))
 }
 
-$html = $html.Replace('http://localhost/', "$BasePath/")
-$html = $html.Replace('https://localhost/', "$BasePath/")
-$html = $html.Replace('https://rjalbite26-hash.github.io/', "$SiteUrl/")
-$html = [regex]::Replace($html, '((?:href|src|action)=["''])/(?!/)', "`$1$BasePath/")
-[System.IO.File]::WriteAllText((Join-Path $PSScriptRoot 'index.html'), $html, [System.Text.UTF8Encoding]::new($false))
+Export-LaravelPage '/' (Join-Path $PSScriptRoot 'index.html')
+foreach ($route in @('/login', '/signup', '/forgot-password')) {
+    $destination = Join-Path $PSScriptRoot ($route.TrimStart('/') + '/index.html')
+    Export-LaravelPage $route $destination
+}
 
 Copy-Item (Join-Path $PSScriptRoot 'public/build/*') (Join-Path $PSScriptRoot 'build') -Recurse -Force
 Copy-Item (Join-Path $PSScriptRoot 'public/images/*') (Join-Path $PSScriptRoot 'images') -Recurse -Force
