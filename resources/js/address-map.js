@@ -330,6 +330,7 @@ window.addressMapPicker = {
     } : { ...fallbackLocation };
     center = { lat: selected.lat, lon: selected.lon, zoom: 16 };
     places = address ? [{ ...selected }] : [{ ...fallbackLocation }, { ...cityLocation }];
+    document.body.classList.add('address-picker-open');
     document.getElementById('addressPicker').hidden = false;
     document.getElementById('addressLabel').value = address?.label || '';
     document.getElementById('locationSearchInput').value = '';
@@ -340,6 +341,7 @@ window.addressMapPicker = {
   },
   close() {
     document.getElementById('addressPicker').hidden = true;
+    document.body.classList.remove('address-picker-open');
     dragStart = null;
     setMapDragging(false);
   },

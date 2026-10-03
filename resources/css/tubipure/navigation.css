@@ -2,6 +2,7 @@
 .nav { position:fixed; inset:24px 24px auto; padding:0; background:transparent; pointer-events:none; }
 .nav { transition:transform .24s ease; }
 .nav.nav-hidden { transform:translateY(calc(-100% - 28px)); }
+body.address-picker-open .nav { display:none; }
 .nav-inner { display:grid; grid-template-columns:minmax(180px,1fr) auto minmax(180px,1fr); max-width:1400px; min-height:70px; margin:auto; padding:9px 18px 9px 32px; gap:22px; flex-wrap:nowrap; border:1px solid rgba(255,255,255,.95); border-radius:999px; background:rgba(249,249,245,.78); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); box-shadow:0 8px 28px rgba(22,70,88,.06); }
 .brand { gap:8px; color:inherit; text-decoration:none; }
 .brand .mark { width:34px; height:34px; }
