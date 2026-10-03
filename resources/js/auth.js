@@ -147,7 +147,7 @@ import './theme.js';
             }
 
             if (payload.user?.role === 'staff') {
-                window.location.assign('/#dashboard');
+                window.location.assign('/#home');
                 return;
             }
 

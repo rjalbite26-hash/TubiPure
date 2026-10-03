@@ -3772,7 +3772,7 @@ document.getElementById('authSubmitBtn').addEventListener('click', async ()=>{
     feedback.textContent = 'You are signed in.';
     document.getElementById('authEmail').value = '';
     document.getElementById('authPassword').value = '';
-    go(currentUser.role==='staff'?'dashboard':'home');
+    go('home');
   }catch(error){ feedback.textContent = error.message; }
   finally{ submitButton.disabled=false; }
 });
