@@ -9,11 +9,7 @@ if [ -n "${RENDER_EXTERNAL_URL:-}" ]; then
   export APP_DEBUG=false
   export CACHE_STORE=file
   unset SESSION_DOMAIN
-
-  case "${DB_CONNECTION:-}" in
-    pgsql|mysql|mariadb) export SESSION_DRIVER=database ;;
-    *) export SESSION_DRIVER=file ;;
-  esac
+  export SESSION_DRIVER=database
 
   if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
     export DB_DATABASE=/var/www/html/storage/app/database.sqlite
