@@ -21,6 +21,10 @@ sed -ri "s/<VirtualHost \\*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-ava
 php artisan storage:link --force
 php artisan migrate --force
 
+if [ -n "${TUBIPURE_ADMIN_EMAIL:-}" ] && [ -n "${TUBIPURE_ADMIN_PASSWORD:-}" ]; then
+  php artisan db:seed --class='Database\Seeders\RenderAdminSeeder' --force
+fi
+
 if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
   SQLITE_DATABASE="${DB_DATABASE:-/var/www/html/storage/app/database.sqlite}"
   chown www-data:www-data "$SQLITE_DATABASE"

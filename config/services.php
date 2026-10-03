@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'tubipure_admin' => [
+        'name' => env('TUBIPURE_ADMIN_NAME', 'TubiPure Admin'),
+        'email' => env('TUBIPURE_ADMIN_EMAIL'),
+        'password' => env('TUBIPURE_ADMIN_PASSWORD'),
+    ],
+
 ];

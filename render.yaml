@@ -44,6 +44,10 @@ services:
         fromDatabase:
           name: tubipure-db
           property: password
+      - key: TUBIPURE_ADMIN_EMAIL
+        sync: false
+      - key: TUBIPURE_ADMIN_PASSWORD
+        sync: false
 
 databases:
   - name: tubipure-db
