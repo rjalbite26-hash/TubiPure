@@ -89,11 +89,14 @@ async function api(path, options={}){
         headers:{'Accept':'application/json'}
       }).catch(()=>null);
       if(sessionCheck?.status===401){
+        const hadAuthenticatedUser=!!currentUser;
         currentUser=null; customers=[]; deliveries=[];
         updateAuthNavigation();
-        setAuthMode('login');
-        go('myaccount');
-        document.getElementById('authFeedback').textContent='Your session ended. Please sign in again.';
+        if(hadAuthenticatedUser){
+          setAuthMode('login');
+          go('myaccount');
+          document.getElementById('authFeedback').textContent='Your session ended. Please sign in again.';
+        }
       }
     }
     const messages = Object.values(payload.errors||{}).flat();
