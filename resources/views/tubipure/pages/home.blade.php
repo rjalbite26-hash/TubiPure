@@ -4,7 +4,7 @@
       <div>
         <div class="hero-eyebrow-v2"><span class="dash"></span>Pure Water Delivery</div>
         <h1 class="hero-v2-h1">Fresh &amp; Clean Water<span>Delivered to Your Door</span></h1>
-        <p class="hero-v2-p"><strong>TubiPure provides safe, high-quality drinking water with fast and reliable delivery. Order now and enjoy clean, refreshing water — anytime, anywhere.</strong></p>
+        <p class="hero-v2-p">TubiPure provides safe, high-quality drinking water.</p>
         <div class="hero-feat-row">
           <div class="hf-item">
             <div class="hf-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2L43 9v13c0 11-8 18-19 24C13 40 5 33 5 22V9Z" fill="currentColor"/><path d="m15 23 6 6 13-14" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
