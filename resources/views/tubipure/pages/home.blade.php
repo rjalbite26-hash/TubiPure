@@ -60,6 +60,37 @@
     </svg>
   </div>
 
+  <section class="home-pricing" aria-labelledby="homePricingTitle">
+    <div class="wrap">
+      <div class="home-pricing-heading">
+        <span class="home-pricing-eyebrow">CLEAR, SIMPLE RATES</span>
+        <h2 id="homePricingTitle">Water pricing</h2>
+        <p>Choose the water you need. Delivery is priced by the distance to your address.</p>
+      </div>
+      <div class="home-pricing-grid">
+        <article class="home-pricing-card">
+          <span class="home-pricing-label">ALKALINE</span>
+          <h3>Alkaline water</h3>
+          <p class="home-pricing-price" id="homeAlkalinePrice" aria-live="polite">Loading price…</p>
+          <span class="home-pricing-unit">per gallon</span>
+        </article>
+        <article class="home-pricing-card">
+          <span class="home-pricing-label">PURIFIED</span>
+          <h3>Purified water</h3>
+          <p class="home-pricing-price" id="homePurifiedPrice" aria-live="polite">Loading price…</p>
+          <span class="home-pricing-unit">per gallon</span>
+        </article>
+        <article class="home-pricing-card home-delivery-pricing-card">
+          <span class="home-pricing-label">DELIVERY</span>
+          <h3>Distance-based delivery</h3>
+          <p class="home-pricing-price" id="homeDeliveryPrice" aria-live="polite">Loading rate…</p>
+          <span class="home-pricing-unit">per kilometer</span>
+          <p class="home-pricing-note">Your delivery fee depends on the distance from TubiPure to your saved address.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <div class="intro">
     <div class="wrap">
       <div class="intro-copy">
@@ -92,37 +123,6 @@
       </div>
     </div>
   </div>
-
-  <section class="home-pricing" aria-labelledby="homePricingTitle">
-    <div class="wrap">
-      <div class="home-pricing-heading">
-        <span class="home-pricing-eyebrow">CLEAR, SIMPLE RATES</span>
-        <h2 id="homePricingTitle">Water pricing</h2>
-        <p>Choose the water you need. Delivery is priced by the distance to your address.</p>
-      </div>
-      <div class="home-pricing-grid">
-        <article class="home-pricing-card">
-          <span class="home-pricing-label">ALKALINE</span>
-          <h3>Alkaline water</h3>
-          <p class="home-pricing-price" id="homeAlkalinePrice" aria-live="polite">Loading price…</p>
-          <span class="home-pricing-unit">per gallon</span>
-        </article>
-        <article class="home-pricing-card">
-          <span class="home-pricing-label">PURIFIED</span>
-          <h3>Purified water</h3>
-          <p class="home-pricing-price" id="homePurifiedPrice" aria-live="polite">Loading price…</p>
-          <span class="home-pricing-unit">per gallon</span>
-        </article>
-        <article class="home-pricing-card home-delivery-pricing-card">
-          <span class="home-pricing-label">DELIVERY</span>
-          <h3>Distance-based delivery</h3>
-          <p class="home-pricing-price" id="homeDeliveryPrice" aria-live="polite">Loading rate…</p>
-          <span class="home-pricing-unit">per kilometer</span>
-          <p class="home-pricing-note">Your delivery fee depends on the distance from TubiPure to your saved address.</p>
-        </article>
-      </div>
-    </div>
-  </section>
 
   <div class="features" id="featuresSection">
     <div class="wrap">
