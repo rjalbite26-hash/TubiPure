@@ -3359,7 +3359,7 @@ function renderMyAccount(){
       return `<article class="customer-order-card" data-customer-order-card="${orderId}">
         <div class="customer-order-main">
           <div class="customer-order-product"><span class="customer-order-product-image"><img src="/images/water-gallon-icon.png" alt=""></span><div><span class="customer-order-id">ORDER #${orderId}</span><h3>${escapeHtml(orderProductLabel(order))}</h3><p>${escapeHtml(waterTypeNames(order).join(' + ')||'Water refill')}</p><span class="customer-order-scheduled">${escapeHtml(orderDate)} <i>·</i> ${escapeHtml(orderTime)}</span><small class="customer-order-preferred"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>Preferred delivery time</small></div></div>
-          <div class="customer-order-progress-wrap">${progress}<div class="customer-order-total-inline" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6.5 9.5h.01m11 5h.01"/></svg><span>Total Amount<b>${total}</b></span></div></div>
+          <div class="customer-order-progress-wrap">${progress}<div class="customer-order-total-inline"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6.5 9.5h.01m11 5h.01"/></svg><span>Total Amount<b>${total}</b></span></div></div>
           <div class="customer-order-actions"><span class="customer-order-status customer-order-status-${escapeHtml(displayStatus.toLowerCase().replaceAll(' ','-'))}">${escapeHtml(customerStatusLabel)}</span><button class="customer-order-action customer-order-action-neutral" type="button" data-toggle-order-details="${orderId}" aria-expanded="false" aria-controls="customerOrderDetails-${orderId}">View Details</button>${actions}</div>
         </div>
         <div class="customer-order-summary" hidden><div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5v10l-9 5-9-5V7zM3 7l9 5 9-5M12 12v10"/></svg><span>Quantity<b>${Number(order.gallons)||0} gal</b></span></div><div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Delivery Address<b>${escapeHtml(address)}</b></span></div><div><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg><span>Payment Method<b>${escapeHtml(payment)}</b></span></div><div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 7h13v11H2zM15 10h4l3 3v5h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>Delivery Fee<b>${deliveryFee}</b></span></div></div>
@@ -3440,11 +3440,9 @@ document.getElementById('cvHistory').addEventListener('click',event=>{
       const isExpanded=detailsButton.getAttribute('aria-expanded')==='true';
       const shouldExpand=!isExpanded;
       const orderSummary=orderCard.querySelector('.customer-order-summary');
-      const orderTotal=orderCard.querySelector('.customer-order-total-inline');
       details.hidden=!shouldExpand;
       if(!shouldExpand) details.open=false;
       if(orderSummary) orderSummary.hidden=!shouldExpand;
-      if(orderTotal) orderTotal.hidden=!shouldExpand;
       detailsButton.setAttribute('aria-expanded',String(shouldExpand));
       detailsButton.textContent=shouldExpand?'Hide Details':'View Details';
       if(shouldExpand){
