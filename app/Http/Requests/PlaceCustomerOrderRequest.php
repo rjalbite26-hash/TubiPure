@@ -115,6 +115,12 @@ class PlaceCustomerOrderRequest extends FormRequest
             if ($timeSlot < $startTime || $timeSlot > $endTime) {
                 $validator->errors()->add('time_slot', "Choose a time between {$startTime} and {$endTime} on {$day}.");
             }
+
+            $currentTime = now();
+
+            if ($this->input('date') === $currentTime->toDateString() && $timeSlot <= $currentTime->format('H:i')) {
+                $validator->errors()->add('time_slot', 'Choose a time slot that has not passed.');
+            }
         }];
     }
 

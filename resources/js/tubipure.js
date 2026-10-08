@@ -4170,6 +4170,7 @@ function getOrderTimeBounds(){
     end:toMinutes(hours.closes,isPickup?'18:00':'16:00'),
     isPickup,
     isOpen:Boolean(hours.open),
+    isToday:selectedDate===localDateString(new Date()),
     weekday
   };
 }
@@ -4190,6 +4191,16 @@ function updateOrderTimeHelp(){
   }
   orderTimeTrigger.disabled=false;
   timeHelp.textContent=`Available for ${bounds.isPickup?'pickup':'delivery'} on ${bounds.weekday} from ${formatBusinessTime(start)} to ${formatBusinessTime(end)}`;
+  const firstAvailableTime=firstAvailableDeliveryTime();
+  if(!firstAvailableTime){
+    timeHelp.textContent=bounds.isToday
+      ?'No time slots remain today. Choose another date.'
+      :`No time slots are available for ${bounds.isPickup?'pickup':'delivery'} on this date.`;
+    orderTimeTrigger.disabled=true;
+    orderTimeInput.value='';
+    document.getElementById('orderTimeDisplay').textContent='Choose a time';
+    return;
+  }
   const [selectedHour,selectedMinute]=orderTimeInput.value.split(':').map(Number);
   if(orderTimeInput.value&&!isAvailableDeliveryTime(selectedHour,selectedMinute)){
     const firstAvailableTime=firstAvailableDeliveryTime();
@@ -4203,7 +4214,13 @@ function updateOrderTimeHelp(){
 function isAvailableDeliveryTime(hour,minute){
   const bounds=getOrderTimeBounds();
   const totalMinutes=hour*60+minute;
-  return bounds.isOpen&&totalMinutes>=bounds.start&&totalMinutes<=bounds.end&&minute%5===0;
+  if(!bounds.isOpen||totalMinutes<bounds.start||totalMinutes>bounds.end||minute%5!==0) return false;
+  if(bounds.isToday){
+    const currentTime=new Date();
+    const currentMinutes=currentTime.getHours()*60+currentTime.getMinutes();
+    if(totalMinutes<=currentMinutes) return false;
+  }
+  return true;
 }
 function firstAvailableDeliveryTime(period=null){
   for(let hour=period==='AM'?0:period==='PM'?12:0;hour<(period==='AM'?12:24);hour++){
