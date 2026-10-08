@@ -625,6 +625,34 @@ a {
         gap: 14px;
     }
 
+    .auth-page.auth-keyboard-active {
+        min-height: 100dvh;
+        padding-top: max(10px, env(safe-area-inset-top));
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+
+    .auth-page.auth-keyboard-active .auth-panel {
+        min-height: 0;
+        justify-content: flex-start;
+    }
+
+    .auth-page.auth-keyboard-active .auth-mobile-brand {
+        display: none;
+    }
+
+    .auth-page.auth-keyboard-active .auth-card {
+        margin: 0 auto 12px;
+        padding: 18px 20px;
+    }
+
+    .auth-page.auth-keyboard-active .auth-back {
+        margin-bottom: 8px;
+    }
+
+    .auth-page.auth-keyboard-active .auth-heading {
+        margin: 10px 0 14px;
+    }
+
 }
 
 @media (max-width: 380px) {

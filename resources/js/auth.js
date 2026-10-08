@@ -9,6 +9,52 @@ import './theme.js';
     const feedback = document.getElementById('authFeedback');
     const mode = page.dataset.authMode;
 
+    const passwordFields = ['#authPassword', '#authPasswordConfirmation'];
+    const keepFocusedPasswordVisible = () => {
+        const focusedInput = document.activeElement;
+        if (!passwordFields.some((selector) => focusedInput.matches?.(selector))) {
+            return;
+        }
+
+        const viewport = window.visualViewport;
+        const visibleTop = viewport?.offsetTop ?? 0;
+        const visibleBottom = visibleTop + (viewport?.height ?? window.innerHeight);
+        const field = focusedInput.closest('.auth-field');
+        const fieldRect = field?.getBoundingClientRect();
+        if (!fieldRect) {
+            return;
+        }
+
+        const topLimit = visibleTop + 20;
+        const bottomLimit = visibleBottom - 24;
+        if (fieldRect.bottom > bottomLimit) {
+            window.scrollBy({ top: fieldRect.bottom - bottomLimit, behavior: 'smooth' });
+        } else if (fieldRect.top < topLimit) {
+            window.scrollBy({ top: fieldRect.top - topLimit, behavior: 'smooth' });
+        }
+    };
+    const scheduleFocusedPasswordVisibility = () => {
+        window.requestAnimationFrame(keepFocusedPasswordVisible);
+    };
+
+    form.addEventListener('focusin', (event) => {
+        if (!passwordFields.some((selector) => event.target.matches(selector))) {
+            return;
+        }
+
+        page.classList.add('auth-keyboard-active');
+        window.setTimeout(scheduleFocusedPasswordVisibility, 250);
+    });
+    form.addEventListener('focusout', () => {
+        window.setTimeout(() => {
+            const passwordFieldIsFocused = passwordFields.some((selector) => document.activeElement.matches?.(selector));
+            if (!passwordFieldIsFocused) {
+                page.classList.remove('auth-keyboard-active');
+            }
+        }, 0);
+    });
+    window.visualViewport?.addEventListener('resize', scheduleFocusedPasswordVisibility);
+
     const requestedIntent = new URLSearchParams(window.location.search).get('intent');
     if (['order', 'my-orders'].includes(requestedIntent)) {
         document.querySelectorAll('.auth-switch a').forEach((link) => {
