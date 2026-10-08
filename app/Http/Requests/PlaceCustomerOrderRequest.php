@@ -37,7 +37,7 @@ class PlaceCustomerOrderRequest extends FormRequest
             'date' => ['required', 'date', 'after_or_equal:today'],
             'time_slot' => ['required', 'date_format:H:i', 'regex:/^(?:[01]\d|2[0-3]):[0-5][05]$/'],
             'contact_name' => ['required', 'string', 'max:255'],
-            'contact_phone' => ['required', 'string', 'max:40'],
+            'contact_phone' => ['required', 'string', 'regex:/^[0-9]{11}$/'],
             'delivery_address' => [
                 'required_if:fulfillment_method,delivery',
                 'nullable',
@@ -57,6 +57,7 @@ class PlaceCustomerOrderRequest extends FormRequest
     {
         return [
             'time_slot.regex' => 'Choose a time in 5-minute steps during delivery availability.',
+            'contact_phone.regex' => 'Enter a contact number with exactly 11 digits.',
         ];
     }
 

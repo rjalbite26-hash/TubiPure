@@ -101,7 +101,7 @@
           <div class="order-section-head"><span>03</span><div><h2>Your contact details</h2><p>We’ll use these details to confirm and coordinate your order.</p></div></div>
           <div class="order-input-grid">
             <div class="form-row"><label for="orderContactName">Contact name</label><input name="contact_name" id="orderContactName" autocomplete="name" maxlength="255" required readonly><p class="order-field-error" data-error-for="contact_name"></p></div>
-            <div class="form-row"><label for="orderPhone">Contact number</label><input type="tel" name="contact_phone" id="orderPhone" autocomplete="tel" maxlength="40" placeholder="09XXXXXXXXX" required><p class="order-field-error" data-error-for="contact_phone"></p></div>
+            <div class="form-row"><label for="orderPhone">Contact number</label><input type="tel" name="contact_phone" id="orderPhone" autocomplete="tel" inputmode="numeric" pattern="[0-9]{11}" maxlength="11" title="Enter exactly 11 digits." placeholder="09XXXXXXXXX" required><p class="order-field-error" data-error-for="contact_phone"></p></div>
           </div>
           <div class="form-row order-instructions-row"><label for="orderInstructions">Delivery instructions <span>(optional)</span></label><textarea name="delivery_instructions" id="orderInstructions" rows="3" maxlength="1000" placeholder="Landmarks, gate details, or other helpful notes"></textarea><p class="order-field-error" data-error-for="delivery_instructions"></p></div>
         </div>

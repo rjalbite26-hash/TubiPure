@@ -969,7 +969,9 @@ function validateOrderForm(form){
   });
   const invalidControls=Array.from(form.elements).filter(control=>control.willValidate&&!control.checkValidity());
   invalidControls.forEach(control=>{
-    const message=control.validity.valueMissing?'Please fill in this required field.':control.validationMessage;
+    const message=control.id==='orderPhone'&&control.validity.patternMismatch
+      ?'Enter exactly 11 digits.'
+      :control.validity.valueMissing?'Please fill in this required field.':control.validationMessage;
     showOrderFieldError(control.name,message,control);
   });
   const fulfillmentMethod=form.querySelector('input[name="fulfillment_method"]:checked')?.value;
@@ -3827,7 +3829,7 @@ function renderCustomerOrder(){
   const phone=document.getElementById('orderPhone');
   const address=document.getElementById('orderAddress');
   if(!name.value) name.value=customer.name||currentUser.name||'';
-  if(!phone.value) phone.value=customer.contact||'';
+  if(!phone.value) phone.value=String(customer.contact||'').replace(/\D/g,'').slice(0,11);
   const savedAddresses=customer.addresses||[];
   const selectedAddressId=address.value;
   address.replaceChildren(new Option('Choose a saved address',''));
@@ -4130,6 +4132,9 @@ document.getElementById('customerOrderForm').addEventListener('change',event=>{
 });
 document.getElementById('customerOrderForm').addEventListener('input',event=>{
   const field=event.target;
+  if(field.id==='orderPhone'){
+    field.value=field.value.replace(/\D/g,'').slice(0,11);
+  }
   if(field.name) clearOrderFieldValidation(field.name);
   updateOrderQuantityStepperButtons();
   document.getElementById('orderFeedback').hidden=true;
