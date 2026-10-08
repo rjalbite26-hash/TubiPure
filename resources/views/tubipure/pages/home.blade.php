@@ -20,15 +20,11 @@
           </div>
         </div>
         <div class="hero-v2-cta">
-          <button class="btn btn-primary" id="heroOrderNowBtn" data-customer-order-action style="{{ auth()->user()?->role === 'staff' ? 'display: none;' : '' }}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="21" r="1.4" fill="currentColor"/><circle cx="18" cy="21" r="1.4" fill="currentColor"/><path d="M2.5 3h2l2.3 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Order Now
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="btn btn-outline-blue" id="heroViewProductsBtn" data-customer-order-action type="button" style="{{ auth()->user()?->role === 'staff' ? 'display: none;' : '' }}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            My Order
-          </button>
+          <a class="btn btn-primary" href="{{ route('login') }}" data-guest-auth-action>
+            Log in
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-outline-blue" href="{{ route('signup') }}" data-guest-auth-action>Sign up</a>
         </div>
       </div>
       <div class="hero-v2-photo">

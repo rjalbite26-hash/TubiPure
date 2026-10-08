@@ -661,6 +661,9 @@ function updateAuthNavigation(){
   document.querySelectorAll('[data-customer-order-action]').forEach(element=>{
     element.style.display = currentUser?.role === 'staff' ? 'none' : '';
   });
+  document.querySelectorAll('[data-guest-auth-action]').forEach(element=>{
+    element.style.display = currentUser ? 'none' : '';
+  });
   document.querySelectorAll('.staff-only').forEach(element=>element.style.display = currentUser?.role==='staff' ? '' : 'none');
   document.querySelectorAll('[data-staff-route]').forEach(element=>element.style.display = currentUser?.role==='staff' ? '' : 'none');
   const pricingPanel=document.getElementById('pricingSettingsPanel');
@@ -985,8 +988,6 @@ function validateOrderForm(form){
     &&(fulfillmentMethod!=='delivery'||Boolean(document.getElementById('orderAddress').value))
     &&Boolean(document.getElementById('orderTime').value);
 }
-document.getElementById('heroOrderNowBtn').addEventListener('click', ()=>openOrderArea('order'));
-document.getElementById('heroViewProductsBtn').addEventListener('click',()=>openOrderArea('myOrdersCard'));
 document.getElementById('tutorialPlaceOrderBtn').addEventListener('click',()=>openOrderArea('order'));
 document.getElementById('tutorialViewOrdersBtn').addEventListener('click',()=>openOrderArea('myOrdersCard'));
 document.getElementById('navMyOrderBtn').addEventListener('click', ()=>openOrderArea('myOrdersCard'));
