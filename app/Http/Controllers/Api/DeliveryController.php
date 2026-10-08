@@ -227,10 +227,10 @@ class DeliveryController extends Controller
         $updated = Delivery::query()
             ->whereKey($delivery->id)
             ->where('customer_id', $customer->id)
-            ->whereIn('status', ['Pending', 'Confirmed'])
+            ->where('status', 'Pending')
             ->update(['status' => 'Cancelled', 'updated_at' => now()]);
 
-        abort_if($updated === 0, 409, 'Only pending or confirmed orders can be cancelled.');
+        abort_if($updated === 0, 409, 'Only pending orders can be cancelled.');
 
         return response()->json(['data' => $this->deliveryData($delivery->fresh()->load('customer'))]);
     }

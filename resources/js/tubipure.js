@@ -3333,9 +3333,10 @@ function renderMyAccount(){
       const customerStatusLabel=order.status==='Confirmed'?'Approved':displayStatus;
       const progress=isCancelled
         ? `<p class="customer-order-cancelled">${order.statusNote?'This order was rejected.':'This order was cancelled.'}${order.statusNote?` Reason: ${escapeHtml(order.statusNote)}`:''}</p>`
-        : `<div class="customer-order-progress" role="img" aria-label="Order progress: ${escapeHtml(displayStatus)}">${steps.map((step,index)=>{
+        : `<div class="customer-order-progress" role="img" aria-label="Order progress: ${escapeHtml(customerStatusLabel)}">${steps.map((step,index)=>{
           const stepClass=order.status==='Delivered'||index<currentStep?'done':(index===currentStep?'current':'');
-          return `<div class="customer-order-progress-step ${stepClass}"><span class="customer-order-progress-dot">${index<currentStep||order.status==='Delivered'?'✓':index+1}</span><span>${step}</span></div>`;
+          const stepLabel=step==='Confirmed'?'Approved':step;
+          return `<div class="customer-order-progress-step ${stepClass}"><span class="customer-order-progress-dot">${index<currentStep||order.status==='Delivered'?'✓':index+1}</span><span>${stepLabel}</span></div>`;
         }).join('')}</div>${order.status==='Delayed'?'<p class="customer-order-delay">Your order is delayed. Our team will update you shortly.</p>':''}`;
       const fulfillment=order.fulfillmentMethod==='pickup'?'Pickup':'Delivery';
       const payment=order.paymentMethod==='cash_on_delivery'?'Cash on delivery':'Not recorded';
@@ -3350,8 +3351,10 @@ function renderMyAccount(){
         ? `<button class="customer-order-action customer-order-action-primary" type="button" data-track-customer-order="${orderId}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/></svg>${isPickup?'Pickup status':'Track Order'}</button>`
         : order.status==='Delivered'
           ? `<button class="customer-order-action customer-order-action-primary" type="button" data-order-again>↻ <span>Order Again</span></button>`
-          : ['Pending','Confirmed'].includes(order.status)
+          : order.status==='Pending'
             ? `<button class="customer-order-action customer-order-action-danger" type="button" data-cancel-customer-order="${orderId}" data-order-status="${escapeHtml(order.status)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>Cancel Order</button>`
+            : order.status==='Confirmed'
+              ? `<button class="customer-order-action customer-order-action-danger" type="button" disabled aria-disabled="true" aria-label="Cancel order unavailable after approval" title="Approved orders can no longer be cancelled"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>Cancel Order</button>`
             : '';
       return `<article class="customer-order-card" data-customer-order-card="${orderId}">
         <div class="customer-order-main">
@@ -3417,11 +3420,10 @@ const closeCancelOrderDialog=()=>{
 document.getElementById('cvHistory').addEventListener('click',event=>{
   const cancelButton=event.target.closest('[data-cancel-customer-order]');
   if(cancelButton){
+    if(cancelButton.disabled||cancelButton.dataset.orderStatus!=='Pending') return;
     pendingOrderCancellationId=cancelButton.dataset.cancelCustomerOrder;
     document.getElementById('cancelOrderNumber').textContent=`#${pendingOrderCancellationId}`;
-    document.getElementById('cancelOrderDescription').textContent=cancelButton.dataset.orderStatus==='Confirmed'
-      ? 'This order is approved but has not gone out for delivery yet. Once cancelled, it can’t be restored.'
-      : 'Your order is awaiting admin approval. Once cancelled, it can’t be restored.';
+    document.getElementById('cancelOrderDescription').textContent='Your order is awaiting admin approval. Once cancelled, it can’t be restored.';
     document.getElementById('cancelOrderDialogFeedback').textContent='';
     cancelOrderDialog.showModal();
     return;
