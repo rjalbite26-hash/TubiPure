@@ -255,13 +255,14 @@ a{color:inherit;}
 @media(max-width:560px){
   .customer-account-grid,.customer-account-grid>div,.customer-orders-page{width:100%;min-width:0;}
   .customer-orders-toolbar{width:100%;min-width:0;align-items:stretch;gap:12px;}
-  .customer-orders-filters{max-width:100%;flex-wrap:wrap;overflow:visible;padding-bottom:0;}
+  .customer-orders-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:100%;overflow:visible;padding-bottom:0;}
+  .customer-order-filter{width:100%;min-width:0;min-height:40px;justify-content:center;padding:8px 5px;font-size:11px;line-height:1.2;white-space:normal;text-align:center;}
   .customer-orders-date-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px;width:100%;min-width:0;}
   .customer-orders-date-filter{min-width:0;align-items:stretch;flex-direction:column;gap:5px;white-space:normal;}
   .customer-orders-date-filter input{width:100%;max-width:100%;}
   .customer-orders-date-clear{align-self:end;}
-  .customer-orders-sort{width:100%;min-width:0;align-self:stretch;justify-content:space-between;gap:10px;}
-  .customer-orders-sort select{width:min(66%,240px);min-width:0;}
+  .customer-orders-sort{display:grid;width:100%;min-width:0;align-self:stretch;justify-content:stretch;gap:5px;white-space:normal;}
+  .customer-orders-sort select{width:100%;min-width:0;}
   .customer-order-progress-wrap{overflow:visible;}
   .customer-order-progress{width:100%;min-width:0;}
   .customer-order-progress-step{min-width:0;gap:5px;font-size:clamp(8px,2.55vw,10px);line-height:1.2;}
